@@ -44,3 +44,6 @@ class Button:
         label_rect = label.get_rect(center=self.rect.center)
 
         surface.blit(label, label_rect)
+
+    def set_position(self, pos):
+        self.rect.center = pos

@@ -7,7 +7,9 @@ from games.pong.pong_screen import PongScreen
 class Screen:
 
     def __init__(self):
-        self.surface = pygame.display.set_mode((800, 600))
+        self.width = 800
+        self.height = 600
+        self.surface = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Python Games")
 
         self.state = "main_menu"
@@ -16,6 +18,11 @@ class Screen:
         self.menu = Menu(self.surface)
         self.pong = PongScreen(self.surface)
 
+    def get_width(self):
+        return self.width
+
+    def get_height(self):
+        return self.height
 
     def update(self):
 

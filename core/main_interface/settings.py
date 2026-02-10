@@ -1,11 +1,17 @@
 import pygame
+from core.utilities.UI.create_buton import Button
 
 class Settings:
 
     def __init__(self, screen):
         self.screen = screen
+
+        w = screen.get_width()  # 800
+        h = screen.get_height()  # 600
+
         self.font = pygame.font.SysFont(None, 48)
-        self.button_rect = pygame.Rect(25, 525, 200, 50)
+
+        self.return_button = Button("RETURN", (100, 400))
 
         self.last_click_time = 0
         self.cooldown = 1000
