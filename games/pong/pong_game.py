@@ -1,9 +1,9 @@
 import pygame
 
-from pong.ball import Ball
-from pong.paddle import Paddle
-from pong.score import Score
-from pong.win_Label import WinLabel
+from games.pong.pong_core.ball import Ball
+from games.pong.pong_core.paddle import Paddle
+from games.pong.pong_core.score import Score
+from games.pong.pong_core.win_Label import WinLabel
 
 class PongGame:
 

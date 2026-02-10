@@ -1,8 +1,6 @@
-import pygame
-
-from pong.pong_menu import PongMenu
-from pong.pong_game import PongGame
-from pong.pong_settings import PongSettings
+from games.pong.pong_interface.pong_menu import PongMenu
+from games.pong.pong_game import PongGame
+from games.pong.pong_interface.pong_settings import PongSettings
 
 class PongScreen:
 

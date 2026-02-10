@@ -1,6 +1,6 @@
 import pygame
-from core.colors import Colors
-from core.UI.create_buton import Button
+from core.utilities.colors import Colors
+
 
 class PongMenu:
 
@@ -29,7 +29,7 @@ class PongMenu:
                 print("button_clicked : PLAY (pong_menu.py)")
                 return "PLAY"
 
-        if self.return_button_rect.collidepoint(mouse_pos) and mouse_click:
+        if self.settings_button_rect.collidepoint(mouse_pos) and mouse_click:
             if current_time - self.last_click_time > self.cooldown:
                 self.last_click_time = current_time
                 print("button_clicked : SETTINGS (pong_menu.py)")
@@ -40,6 +40,12 @@ class PongMenu:
                 self.last_click_time = current_time
                 print("button_clicked : RETURN (pong_menu.py)")
                 return "RETURN"
+
+        if self.quit_button_rect.collidepoint(mouse_pos) and mouse_click:
+            if current_time - self.last_click_time > self.cooldown:
+                self.last_click_time = current_time
+                print("button_clicked : QUIT (pong_menu.py)")
+                return "QUIT"
 
         return None
 
@@ -63,3 +69,6 @@ class PongMenu:
         surface.blit(return_text, (self.return_button_rect.x + 50, self.return_button_rect.y + 10))
 
         #button quit
+        pygame.draw.rect(surface, Colors.BUTTON, self.quit_button_rect)
+        quit_text = self.font.render("Quit", True, Colors.WHITE)
+        surface.blit(quit_text, (self.quit_button_rect.x + 50, self.quit_button_rect.y + 10))

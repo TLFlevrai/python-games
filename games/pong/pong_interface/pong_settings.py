@@ -1,6 +1,3 @@
-import pygame
-from core.colors import Colors
-
 class PongSettings:
 
     def __init__(self, screen):

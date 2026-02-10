@@ -1,5 +1,5 @@
 import pygame
-from core.colors import Colors
+
 
 class QuitInterface:
 

@@ -1,8 +1,8 @@
 import pygame
 
-from menu import Menu
-from settings import Settings
-from pong.pong_screen import PongScreen
+from core.main_interface.menu import Menu
+from core.main_interface.settings import Settings
+from games.pong.pong_screen import PongScreen
 
 class Screen:
 

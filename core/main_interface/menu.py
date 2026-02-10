@@ -32,6 +32,12 @@ class Menu:
                 print("button_clicked : SETTINGS (menu.py)")
                 return "SETTINGS"
 
+        if self.quit_button_rect.collidepoint(mouse_pos) and mouse_click:
+            if current_time - self.last_click_time > self.cooldown:
+                self.last_click_time = current_time
+                print("button_clicked : QUIT (menu.py)")
+                return "QUIT"
+
     def draw(self, surface):
         title = self.font.render("MENU", True, (255, 255, 255))
         surface.blit(title, (350, 100))
