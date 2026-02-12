@@ -43,7 +43,7 @@ class Layout:
 
             elif zone == Layout.BOTTOM:
                 x = self.width // 2
-                y = self.height - 80 - (count-i)*self.spacing
+                y = self.height - 80 - (count-1-i)*self.spacing
 
             positions.append((int(x), int(y)))
 

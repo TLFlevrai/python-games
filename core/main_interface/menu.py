@@ -1,47 +1,72 @@
 import pygame
+from core.utilities.colors import Colors
 from core.utilities.UI.Layout import Layout
-from core.utilities.UI.create_buton import Button
-from core.utilities.UI.create_label import Label
+from core.utilities.UI.ui_builder import UIBuilder
+
 
 class Menu:
+    """Menu principal utilisant le système UIBuilder"""
 
-    def __init__(self, screen):
-        self.screen = screen
+    def __init__(self, surface):
+        self.surface = surface
+        self.screen_width = surface.get_width()
+        self.screen_height = surface.get_height()
 
-        w = screen.get_width() #800
-        h = screen.get_height() #600
+        # Créer le layout avec espacement de 80 pixels entre éléments
+        self.layout = Layout(self.screen_width, self.screen_height, spacing=80)
 
-        self.title = Label(text="Menu", position=Layout.CENTER, font_size=48)
+        # Créer le UIBuilder pour la zone centrale
+        self.ui_builder = UIBuilder(self.layout, Layout.CENTER)
 
-        self.pong_button = Button("PONG", (w//2, h//2 - 100))
-        self.settings_button = Button("SETTINGS", (w//2, h//2 - 25))
-        self.quit_button = Button("QUIT", (w//2, h//2 + 50))
+        # Ajouter le titre
+        self.title_label = self.ui_builder.add_label(
+            "PYTHON GAMES",
+            font_size=72,
+            color=Colors.WHITE
+        )
 
-        self.last_click_time = 0
-        self.cooldown = 1000
+        # Ajouter les boutons
+        self.pong_button = self.ui_builder.add_button("PONG", size=(250, 60))
+        self.flappy_button = self.ui_builder.add_button("FLAPPY BIRD", size=(250, 60))
+        self.settings_button = self.ui_builder.add_button("Settings", size=(250, 60))
+        self.quit_button = self.ui_builder.add_button("Quit", size=(250, 60))
+
+        print("Menu initialisé avec UIBuilder")
+        print(f"  - {len(self.ui_builder.elements)} éléments créés")
 
     def update(self):
+        """Met à jour le menu et retourne l'action sélectionnée"""
 
-        if self.pong_button.update():
-            print("button_clicked : PONG (menu.py)")
-            return "PONG"
+        # Appeler update() du UIBuilder pour détecter les clics
+        clicked_element = self.ui_builder.update()
 
-        if self.settings_button.update():
-            print("button_clicked : SETTINGS (menu.py)")
-            return "SETTINGS"
+        # Vérifier quel bouton a été cliqué
+        if clicked_element:
+            if clicked_element == self.pong_button:
+                print("→ Menu: Bouton PONG cliqué")
+                return "PONG"
 
-        if self.quit_button.update():
-            print("button_clicked : QUIT (menu.py)")
-            return "QUIT"
+            elif clicked_element == self.flappy_button:
+                print("→ Menu: Bouton FLAPPY BIRD cliqué")
+                return "FLAPPY_BIRD"
+
+            elif clicked_element == self.settings_button:
+                print("→ Menu: Bouton Settings cliqué")
+                return "SETTINGS"
+
+            elif clicked_element == self.quit_button:
+                print("→ Menu: Bouton Quit cliqué")
+                return "QUIT"
+
+        return None
 
     def draw(self, surface):
-        self.title.draw(surface)
+        """Dessine le menu"""
 
-        #pong
-        self.pong_button.draw(surface)
+        # Dessiner tous les éléments via UIBuilder
+        self.ui_builder.draw(surface)
 
-        #settings
-        self.settings_button.draw(surface)
-
-        #quit
-        self.quit_button.draw(surface)
+        # Optionnel: Ajouter une version en bas à droite
+        font_small = pygame.font.SysFont(None, 24)
+        version_text = font_small.render("v1.0 - UIBuilder Demo", True, Colors.GRAY)
+        surface.blit(version_text, (self.screen_width - 180, self.screen_height - 30))
