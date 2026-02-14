@@ -3,18 +3,18 @@ from core.utilities.UI.create_label import Label
 
 class UIBuilder:
 
-    def __init__(self, layout, zone):
+    def __init__(self, layout, zone, input_manager):
 
         self.layout = layout
         self.zone = zone
+        self.input = input_manager
 
         self.elements = []
 
     # ---------- ADD ----------
 
-    def add_button(self, text, size=(200, 50), cooldown=300):
-        """Ajoute un bouton avec paramètres optionnels"""
-        button = Button(text, (0, 0), size=size, cooldown=cooldown)
+    def add_button(self, text, size=(200, 50)):
+        button = Button(text, (0, 0), self.input, size=size)
         self.elements.append(button)
 
         self.refresh_layout()
@@ -22,13 +22,15 @@ class UIBuilder:
         return button
 
     def add_label(self, text, font_size=36, color=(255, 255, 255)):
-        """Ajoute un label avec paramètres optionnels"""
         label = Label(text, (0, 0), font_size=font_size, color=color)
         self.elements.append(label)
 
         self.refresh_layout()
 
         return label
+    
+    def add_version(self, text, font_size=36, color=(255, 255, 255)):
+        Label = Label(text, (0, 0))
 
     # ---------- REMOVE ----------
 
@@ -57,13 +59,11 @@ class UIBuilder:
     # ---------- UPDATE ----------
 
     def update(self):
-        """
-        Appelle update() sur tous les éléments cliquables (boutons).
-        Retourne l'élément cliqué, ou None si aucun clic.
-        """
         for element in self.elements:
+
             if hasattr(element, 'update'):
                 result = element.update()
+
                 if result:  # Si l'élément a été cliqué
                     return element
         return None

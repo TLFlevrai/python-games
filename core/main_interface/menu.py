@@ -1,4 +1,5 @@
 import pygame
+
 from core.utilities.colors import Colors
 from core.utilities.UI.Layout import Layout
 from core.utilities.UI.ui_builder import UIBuilder
@@ -7,23 +8,18 @@ from core.utilities.UI.ui_builder import UIBuilder
 class Menu:
     """Menu principal utilisant le système UIBuilder"""
 
-    def __init__(self, surface):
+    def __init__(self, surface, input_manager):
         self.surface = surface
         self.screen_width = surface.get_width()
         self.screen_height = surface.get_height()
 
-        # Créer le layout avec espacement de 80 pixels entre éléments
+        self.input = input_manager
+
         self.layout = Layout(self.screen_width, self.screen_height, spacing=80)
+        self.ui_builder = UIBuilder(self.layout, Layout.CENTER, self.input)
 
-        # Créer le UIBuilder pour la zone centrale
-        self.ui_builder = UIBuilder(self.layout, Layout.CENTER)
-
-        # Ajouter le titre
-        self.title_label = self.ui_builder.add_label(
-            "PYTHON GAMES",
-            font_size=72,
-            color=Colors.WHITE
-        )
+        #ajouter le titre
+        self.title_label = self.ui_builder.add_label("PYTHON GAMES", font_size=72, color=Colors.WHITE)
 
         # Ajouter les boutons
         self.pong_button = self.ui_builder.add_button("PONG", size=(250, 60))
@@ -68,5 +64,5 @@ class Menu:
 
         # Optionnel: Ajouter une version en bas à droite
         font_small = pygame.font.SysFont(None, 24)
-        version_text = font_small.render("v1.0 - UIBuilder Demo", True, Colors.GRAY)
-        surface.blit(version_text, (self.screen_width - 180, self.screen_height - 30))
+        version_text = font_small.render("v0.0.0.3.5 - UI_Integration", True, Colors.GRAY)
+        surface.blit(version_text, (self.screen_width - 200, self.screen_height - 30))

@@ -1,10 +1,12 @@
 import pygame
 from core.utilities.colors import Colors
+from core.utilities.input.input_manager import InputManager
 
 class Button:
 
-    def __init__(self, text, center_pos, size=(200,50), cooldown=300):
+    def __init__(self, text, center_pos, input_manager, size=(200,50)):
 
+        self.input = input_manager
         self.font = pygame.font.SysFont(None, 48)
 
         self.rect = pygame.Rect(0,0,*size)
@@ -12,28 +14,21 @@ class Button:
 
         self.text = text
 
-        self.last_click = 0
-        self.cooldown = cooldown
-
     def update(self):
 
-        mouse_pos = pygame.mouse.get_pos()
-        mouse_click = pygame.mouse.get_pressed()[0]
-
-        now = pygame.time.get_ticks()
+        mouse_pos = self.input.get_mouse_pos()
 
         if self.rect.collidepoint(mouse_pos):
 
-            if mouse_click and now - self.last_click > self.cooldown:
+            if self.input.click() :
 
-                self.last_click = now
                 return True
 
         return False
 
     def draw(self, surface):
 
-        mouse_pos = pygame.mouse.get_pos()
+        mouse_pos = self.input.get_mouse_pos()
 
         # hover color
         color = Colors.BUTTON_HOVER if self.rect.collidepoint(mouse_pos) else Colors.BUTTON

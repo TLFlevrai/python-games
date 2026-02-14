@@ -1,37 +1,40 @@
 import pygame
-from core.utilities.UI.create_buton import Button
+
+from core.utilities.colors import Colors
+from core.utilities.UI.Layout import Layout
+from core.utilities.UI.ui_builder import UIBuilder
 
 class Settings:
 
-    def __init__(self, screen):
-        self.screen = screen
+    def __init__(self, surface, input_manager):
+        self.surface = surface
+        self.screen_width = surface.get_width()
+        self.screen_height = surface.get_height()
 
-        w = screen.get_width()  # 800
-        h = screen.get_height()  # 600
+        self.input = input_manager
 
-        self.font = pygame.font.SysFont(None, 48)
+        self.layout = Layout(self.screen_width, self.screen_height)
 
-        self.return_button = Button("RETURN", (100, 400))
+        self.ui_center = UIBuilder(self.layout, Layout.CENTER, self.input)
+        self.ui_return = UIBuilder(self.layout, Layout.LEFT_CORNER, self.input)
 
-        self.last_click_time = 0
-        self.cooldown = 1000
+        self.title = self.ui_center.add_label("SETTINGS", font_size=72, color = Colors.WHITE)
+        self.return_button = self.ui_return.add_button("RETURN")
+
+        print("Settings initialisé avec UIBuilder")
+        print(f"  - {len(self.ui_center.elements)} éléments créés")
+        print(f"  - {len(self.ui_return.elements)} éléments créés")
 
     def update(self):
-        mouse_pos = pygame.mouse.get_pos()
-        mouse_click = pygame.mouse.get_pressed()[0]
+        clicked_element = self.ui_return.update()
 
-        current_time = pygame.time.get_ticks()
-
-        if self.button_rect.collidepoint(mouse_pos) and mouse_click:
-            if current_time - self.last_click_time > self.cooldown:
-                self.last_click_time = current_time
-                print("button_clicked : RETURN (settings.py)")
+        if clicked_element :
+            if clicked_element == self.return_button:
+                print("→ Settings: Bouton RETURN cliqué")
                 return "RETURN"
+                
+        return None
 
     def draw(self, surface):
-        title = self.font.render("SETTINGS", True, (255, 255, 255))
-        surface.blit(title, (340, 50))
-
-        pygame.draw.rect(surface, (100, 100, 255), self.button_rect)
-        text = self.font.render("RETURN", True, (255, 255, 255))
-        surface.blit(text, (self.button_rect.x + 30, self.button_rect.y + 10))
+        self.ui_center.draw(surface)
+        self.ui_return.draw(surface)

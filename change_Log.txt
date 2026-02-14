@@ -1,0 +1,24 @@
+=== v.0.0.3.5 (UI_Integration) === 13/02/2026 === Major UPDATE === 11 changes
+-PYTHON GAMES has a logo now
+-change_log Integration
+-refont of the pong menu :
+    -use the ui_builder to build the menu
+    -The quit_button work now
+-refont of the pong_settings :
+    -pong_settings are now build by the ui_builder
+-refont of main_screen :
+    -The precedent PLAY_button was removed
+    -The quit_button work now
+-refont of the main_settings :
+    -main_settings are now build by the ui_builder
+-ui_builder improvements :
+    -add the possibility in Layout
+        -can left corner now
+        -can right corner now
+-the Quit button can work now
+-bug fixed :
+    -a delay_manger was added
+    -all menu have now a cooldown before drawing to avoid any spam_click/instant_transition bug
+-to avoid any click_error and centralize the input a input manager was added
+-code architecture optimisation
+============================================================================

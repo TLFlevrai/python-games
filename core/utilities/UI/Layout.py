@@ -6,6 +6,9 @@ class Layout:
     RIGHT = "right"
     CENTER = "center"
 
+    RIGHT_CORNER = "right_corner"
+    LEFT_CORNER = "left_corner"
+
     def __init__(self, screen_width, screen_height, spacing=20):
 
         self.width = screen_width
@@ -17,6 +20,32 @@ class Layout:
         positions = []
 
         if count == 0:
+            return positions
+        
+         # ---------- CORNERS (SPECIAL CASE) ----------
+
+        # pas de distribution verticale ici
+        if zone == Layout.RIGHT_CORNER:
+
+            for i in range(count):
+
+                x = self.width - 100
+                y = self.height - 50 - (count - 1 - i) * self.spacing
+
+                positions.append((int(x), int(y)))
+
+            return positions
+
+
+        if zone == Layout.LEFT_CORNER:
+
+            for i in range(count):
+
+                x = 100
+                y = self.height - 50 - (count - 1 - i) * self.spacing
+
+                positions.append((int(x), int(y)))
+
             return positions
 
         # distribution verticale

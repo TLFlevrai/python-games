@@ -1,20 +1,30 @@
 import pygame
+
 from screen import Screen
+from core.utilities.input.input_manager import InputManager
 
 class Game:
 
     def __init__(self):
+
         self.running = True
         self.clock = pygame.time.Clock()
-        self.screen = Screen()
+
+        self.input = InputManager()
+        self.screen = Screen(self.input)
 
     def run(self):
 
         while self.running :
 
-            for event in pygame.event.get():
+            events = pygame.event.get()
+
+            for event in events:
                 if event.type == pygame.QUIT:
                     self.running = False
+
+            #input manager
+            self.input.update(events)
 
             self.screen.update()
             self.screen.draw()

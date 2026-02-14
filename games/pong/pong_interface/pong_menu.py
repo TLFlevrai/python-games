@@ -1,74 +1,51 @@
-import pygame
 from core.utilities.colors import Colors
-
+from core.utilities.UI.Layout import Layout
+from core.utilities.UI.ui_builder import UIBuilder
 
 class PongMenu:
 
-    def __init__(self, screen):
-        self.screen = screen
+    """Menu principal utilisant le système UIBuilder"""
 
-        self.font = pygame.font.SysFont(None, 48)
-        self.play_button_rect = pygame.Rect(100, 200, 200, 50)
-        self.settings_button_rect = pygame.Rect(100, 300, 250, 50)
-        self.return_button_rect = pygame.Rect(100, 400, 200, 50)
-        self.quit_button_rect = pygame.Rect(100, 500, 200, 50)
+    def __init__(self, surface, input_manager):
+        self.surface = surface
+        self.screen_width = surface.get_width()
+        self.screen_height = surface.get_height()
 
-        self.last_click_time = 0
-        self.cooldown = 1000
+        self.input = input_manager
+
+        #initialisation du layout
+        self.layout = Layout(self.screen_width, self.screen_height, spacing=80)
+        self.ui_builder = UIBuilder(self.layout, Layout.CENTER, self.input)
+
+        #ajout dse elements
+        self.title_Label = self.ui_builder.add_label("PONG", font_size=72, color=Colors.WHITE)
+        self.play_button = self.ui_builder.add_button("PLAY", size=(250, 60))
+        self.settings_button = self.ui_builder.add_button("Settings", size=(250, 60))
+        self.return_button = self.ui_builder.add_button("Return", size=(250, 60))
+        self.quit_button = self.ui_builder.add_button("Quit", size=(250, 60))
+
+        print("Pong_Menu initialisé avec UIBuilder")
+        print(f"  - {len(self.ui_builder.elements)} éléments créés")
 
     def update(self):
 
-        mouse_pos = pygame.mouse.get_pos()
-        mouse_click = pygame.mouse.get_pressed()[0]
-
-        current_time = pygame.time.get_ticks()
-
-        if self.play_button_rect.collidepoint(mouse_pos) and mouse_click:
-            if current_time - self.last_click_time > self.cooldown:
-                self.last_click_time = current_time
-                print("button_clicked : PLAY (pong_menu.py)")
+        clicked_element = self.ui_builder.update()
+        
+        if clicked_element :
+            if clicked_element == self.play_button:
+                print("→ Pong_Menu: Bouton PLAY cliqué")
                 return "PLAY"
-
-        if self.settings_button_rect.collidepoint(mouse_pos) and mouse_click:
-            if current_time - self.last_click_time > self.cooldown:
-                self.last_click_time = current_time
-                print("button_clicked : SETTINGS (pong_menu.py)")
+            if clicked_element == self.settings_button:
+                print("→ Pong_Menu: Bouton SETTINGS cliqué")
                 return "SETTINGS"
-
-        if self.return_button_rect.collidepoint(mouse_pos) and mouse_click:
-            if current_time - self.last_click_time > self.cooldown:
-                self.last_click_time = current_time
-                print("button_clicked : RETURN (pong_menu.py)")
+            if clicked_element == self.return_button:
+                print("→ Pong_Menu: Bouton RETURN cliqué")
                 return "RETURN"
-
-        if self.quit_button_rect.collidepoint(mouse_pos) and mouse_click:
-            if current_time - self.last_click_time > self.cooldown:
-                self.last_click_time = current_time
-                print("button_clicked : QUIT (pong_menu.py)")
+            if clicked_element == self.quit_button:
+                print("→ Pong_Menu: Bouton QUIT cliqué")
                 return "QUIT"
-
+        
         return None
 
     def draw(self, surface):
-        title = self.font.render("PONG", True, Colors.WHITE)
-        surface.blit(title, (100, 100))
-
-        #button play
-        pygame.draw.rect(surface, Colors.BUTTON, self.play_button_rect)
-        play_text = self.font.render("Play", True, Colors.WHITE)
-        surface.blit(play_text, (self.play_button_rect.x + 60, self.play_button_rect.y + 10))
-
-        #button settings
-        pygame.draw.rect(surface, Colors.BUTTON, self.settings_button_rect)
-        settings_text = self.font.render("Settings", True, Colors.WHITE)
-        surface.blit(settings_text, (self.settings_button_rect.x + 50, self.settings_button_rect.y + 10))
-
-        #button return
-        pygame.draw.rect(surface, Colors.BUTTON, self.return_button_rect)
-        return_text = self.font.render("return", True, Colors.WHITE)
-        surface.blit(return_text, (self.return_button_rect.x + 50, self.return_button_rect.y + 10))
-
-        #button quit
-        pygame.draw.rect(surface, Colors.BUTTON, self.quit_button_rect)
-        quit_text = self.font.render("Quit", True, Colors.WHITE)
-        surface.blit(quit_text, (self.quit_button_rect.x + 50, self.quit_button_rect.y + 10))
+        self.ui_builder.draw(surface)
