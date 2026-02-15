@@ -45,12 +45,11 @@ class Ball:
         if rect_ball.colliderect(rect_left) or rect_ball.colliderect(rect_right):
             self.vx = -self.vx
 
+        # score
         if self.x < 0:
             self.reset()
             return "RIGHT_SCORE"
-
-        # score
-        if self.x < 0 or self.x > self.screen_width:
+        elif self.x > self.screen_width:
             self.reset()
             return "LEFT_SCORE"
 

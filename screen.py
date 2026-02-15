@@ -3,6 +3,7 @@ import pygame
 from core.main_interface.menu import Menu
 from core.main_interface.settings import Settings
 from games.pong.pong_screen import PongScreen
+from games.flappy_bird.flappy_bird_screen import FlappyBirdScreen
 from core.utilities.Interface.quit_interface import QuitInterface
 from core.utilities.time.delay import Delay
 
@@ -17,8 +18,11 @@ class Screen:
         self.surface = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Python Games")
 
-        icon = pygame.image.load("assets/LOGO_PYTHON_GAMES.png")
-        pygame.display.set_icon(icon)
+        try :
+            icon = pygame.image.load("assets/LOGO_PYTHON_GAMES.png")
+            pygame.display.set_icon(icon)
+        except (pygame.error, FileNotFoundError) as e:
+            print(f"⚠️ Warning: Could not load icon - {e}")
 
         self.transition_delay = Delay(500)  # 0.5 seconde
 
@@ -26,7 +30,8 @@ class Screen:
         
         self.next_state = None
         self.menu = Menu(self.surface, self.input)
-        self.pong = PongScreen(self.surface, self.input)
+        self.pong = PongScreen(self.surface, self.input, self.width, self.height)
+        self.flappy_bird = FlappyBirdScreen()
         self.settings = Settings(self.surface, self.input)
         self.quit = QuitInterface(self.surface)
 

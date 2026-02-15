@@ -8,11 +8,14 @@ from core.utilities.time.delay import Delay
 
 class PongScreen:
 
-    def __init__(self, screen, input_manager):
+    def __init__(self, screen, input_manager, screen_width, screen_height):
 
         self.surface = screen
 
         self.input = input_manager
+
+        self.screen_width = screen_width
+        self.screen_height = screen_height
 
         self.transition_delay = Delay(1000)  # 1 seconde
 
@@ -20,7 +23,7 @@ class PongScreen:
 
         self.next_state = None
         self.menu = PongMenu(self.surface, self.input)
-        self.game = PongGame(self.surface)
+        self.game = PongGame(self.surface, self.input, self.screen_width, self.screen_height)
         self.settings = PongSettings(self.surface, self.input)
         self.quit = QuitInterface(self.surface)
 
@@ -49,7 +52,12 @@ class PongScreen:
 
         elif self.state == "game":
 
-            self.game.update()
+            result_game = self.game.update()
+
+            if result_game == "RETURN":
+                self.state = "menu"
+                self.transition_delay.start()
+
 
         elif self.state == "settings":
 
@@ -73,7 +81,7 @@ class PongScreen:
 
         self.surface.fill((30, 30, 30))
 
-        if self.state == "menu":
+        if self.state == "menu" and not self.transition_delay.is_running():
             self.menu.draw(surface)
 
         if self.state == "game":

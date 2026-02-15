@@ -1,4 +1,39 @@
-=== v.0.0.3.5 (UI_Integration) === 13/02/2026 === Major UPDATE === 11 changes
+=== v.0.0.4 (Pong_Improvements) === 15/02/2026 === Minor UPDATE === 4 changes
+
+-pong_game improvements :
+    -new class waiting_label :
+        show a waition label
+    -new class pause_label :
+        show a pause label
+    -new class pause_button :
+        allow the pong_game to pause
+    -new class play_button :
+        allow the pong_game to start after cliking the pause_button
+    -new class restart_button :
+        allow the game after someone win to restart
+    -new class return_button :
+        allow the possibility in pong_game to return in pong_menu
+    -input_manager was now integrated to pong_game
+-ui_builder improvements :
+    -create_label improvements :
+        -the create label support now a label version
+-structure correction :
+    -pong_game as now acces to screen_width and screen_height
+-bug fixed :
+    -the double verification of score in pong_ball was removed
+    -to avoid any crash :
+        - a try was added in the chargement of the logo
+
+---UPDATE SPEC---
+10 new files added
+3 new folder added
+7 files modifications
+-----------------
+
+===================================================================================
+
+=== v.0.0.3.5 (UI_Integration) === 14/02/2026 === Major UPDATE === 11 changes
+
 -PYTHON GAMES has a logo now
 -change_log Integration
 -refont of the pong menu :
@@ -19,6 +54,15 @@
 -bug fixed :
     -a delay_manger was added
     -all menu have now a cooldown before drawing to avoid any spam_click/instant_transition bug
--to avoid any click_error and centralize the input a input manager was added
+    -to avoid any click_error and centralize the input, an input manager was added
 -code architecture optimisation
+
 ============================================================================
+
+===UPDATE RULES=============
+
+Minor UPDATE : 1-5 changes
+NORMAL UPDATE : 5-10 changes
+Major UPDATE : +10 changes
+
+============================

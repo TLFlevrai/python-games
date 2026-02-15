@@ -27,3 +27,7 @@ class Delay:
             return False
 
         return True
+    
+    def is_finished(self):
+        if not self.active:
+            return True

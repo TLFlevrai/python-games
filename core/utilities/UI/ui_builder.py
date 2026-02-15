@@ -1,5 +1,6 @@
 from core.utilities.UI.create_buton import Button
-from core.utilities.UI.create_label import Label
+from core.utilities.UI.label.create_label import Label
+from core.utilities.UI.label.version_label_version import VersionLabel
 
 class UIBuilder:
 
@@ -29,8 +30,13 @@ class UIBuilder:
 
         return label
     
-    def add_version(self, text, font_size=36, color=(255, 255, 255)):
-        Label = Label(text, (0, 0))
+    def add_version(self, text):
+        version = VersionLabel(text, (0, 0))
+        self.elements.append(version)
+
+        self.refresh_layout()
+
+        return version
 
     # ---------- REMOVE ----------
 

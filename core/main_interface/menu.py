@@ -17,6 +17,7 @@ class Menu:
 
         self.layout = Layout(self.screen_width, self.screen_height, spacing=80)
         self.ui_builder = UIBuilder(self.layout, Layout.CENTER, self.input)
+        self.version_ui = UIBuilder(self.layout, Layout.RIGHT_CORNER, self.input)
 
         #ajouter le titre
         self.title_label = self.ui_builder.add_label("PYTHON GAMES", font_size=72, color=Colors.WHITE)
@@ -26,6 +27,9 @@ class Menu:
         self.flappy_button = self.ui_builder.add_button("FLAPPY BIRD", size=(250, 60))
         self.settings_button = self.ui_builder.add_button("Settings", size=(250, 60))
         self.quit_button = self.ui_builder.add_button("Quit", size=(250, 60))
+
+        #ajouter la version
+        self.version_label = self.version_ui.add_version("v.0.0.4 General_Improvements")
 
         print("Menu initialisé avec UIBuilder")
         print(f"  - {len(self.ui_builder.elements)} éléments créés")
@@ -61,8 +65,4 @@ class Menu:
 
         # Dessiner tous les éléments via UIBuilder
         self.ui_builder.draw(surface)
-
-        # Optionnel: Ajouter une version en bas à droite
-        font_small = pygame.font.SysFont(None, 24)
-        version_text = font_small.render("v0.0.0.3.5 - UI_Integration", True, Colors.GRAY)
-        surface.blit(version_text, (self.screen_width - 200, self.screen_height - 30))
+        self.version_ui.draw(surface)
