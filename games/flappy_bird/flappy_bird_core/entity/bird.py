@@ -1,0 +1,79 @@
+import pygame
+
+class Bird:
+
+    def __init__(self, x, y):
+
+        # position
+        self.x = x
+        self.y = y
+
+        # taille
+        self.width = 40
+        self.height = 30
+
+        # physique
+        self.gravity = 0.5
+        self.jump_strength = -8
+        self.velocity_y = 0
+
+        # rotation (visuelle)
+        self.rotation = 0
+
+        # état
+        self.alive = True
+
+        # hitbox
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+    # ---------- INPUT ----------
+
+    def flap(self):
+
+        if self.alive:
+            self.velocity_y = self.jump_strength
+
+    # ---------- UPDATE ----------
+
+    def update(self):
+
+        if not self.alive:
+            return
+
+        # appliquer gravité
+        self.velocity_y += self.gravity
+        self.y += self.velocity_y
+
+        # rotation (visuel)
+        if self.velocity_y < 0:
+            self.rotation = -25
+        else:
+            self.rotation = min(90, self.rotation + 3)
+
+        # update rect
+        self.rect.topleft = (self.x, self.y)
+
+    # ---------- COLLISION ----------
+
+    def get_rect(self):
+        return self.rect
+
+    # ---------- DRAW ----------
+
+    def draw(self, surface):
+
+        # dessin simple (rectangle jaune)
+        pygame.draw.rect(surface, (255,255,0), self.rect)
+
+    # ---------- RESET ----------
+
+    def reset(self, x, y):
+
+        self.x = x
+        self.y = y
+
+        self.velocity_y = 0
+        self.rotation = 0
+        self.alive = True
+
+        self.rect.topleft = (self.x, self.y)

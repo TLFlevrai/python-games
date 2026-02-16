@@ -20,12 +20,12 @@ from core.utilities.time.delay import Delay
 
 class PongGame:
 
-    def __init__(self, screen, input_manager, screen_width, screen_height):
-        self.screen = screen
+    def __init__(self, surface, input_manager):
+        self.screen = surface
         self.input = input_manager
 
-        self.screen_width = screen_width
-        self.screen_height = screen_height
+        self.screen_width = surface.get_width()
+        self.screen_height = surface.get_height()
         paddle_width, paddle_height = 10, 100
 
         center_x = self.screen_width//2

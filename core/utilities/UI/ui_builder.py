@@ -1,6 +1,7 @@
 from core.utilities.UI.create_buton import Button
 from core.utilities.UI.label.create_label import Label
 from core.utilities.UI.label.version_label_version import VersionLabel
+from core.utilities.UI.label.subtitle_label import SubtitleLabel  # ← NOUVEAU
 
 class UIBuilder:
 
@@ -14,8 +15,8 @@ class UIBuilder:
 
     # ---------- ADD ----------
 
-    def add_button(self, text, size=(200, 50)):
-        button = Button(text, (0, 0), self.input, size=size)
+    def add_button(self, text, size=(200, 50), color=None):
+        button = Button(text, (0, 0), self.input, size=size, color=color)
         self.elements.append(button)
 
         self.refresh_layout()
@@ -29,6 +30,15 @@ class UIBuilder:
         self.refresh_layout()
 
         return label
+    
+    def add_subtitle(self, text):  # ← NOUVEAU
+        """Ajoute un sous-titre stylisé avec animation subtile"""
+        subtitle = SubtitleLabel(text, (0, 0))
+        self.elements.append(subtitle)
+
+        self.refresh_layout()
+
+        return subtitle
     
     def add_version(self, text):
         version = VersionLabel(text, (0, 0))
@@ -54,9 +64,11 @@ class UIBuilder:
 
     def refresh_layout(self):
         """Recalcule et applique les positions de tous les éléments"""
+        
         positions = self.layout.compute_positions(
             len(self.elements),
-            self.zone
+            self.zone,
+            elements=self.elements
         )
 
         for element, pos in zip(self.elements, positions):
@@ -70,7 +82,7 @@ class UIBuilder:
             if hasattr(element, 'update'):
                 result = element.update()
 
-                if result:  # Si l'élément a été cliqué
+                if result:
                     return element
         return None
 

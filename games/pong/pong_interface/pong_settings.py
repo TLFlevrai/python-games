@@ -19,7 +19,7 @@ class PongSettings:
         self.title = self.ui_center.add_label("PONG SETTINGS", font_size=72, color=Colors.WHITE)
         self.return_button = self.ui_return.add_button("RETURN")
 
-        print("Pong_Settings initialisé avec UIBuilder")
+        print("PONG_Settings initialisé avec UIBuilder")
         print(f"  - {len(self.ui_center.elements)} éléments créés")
         print(f"  - {len(self.ui_return.elements)} éléments créés")
 

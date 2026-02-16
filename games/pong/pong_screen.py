@@ -1,29 +1,29 @@
 import pygame
 
+#import interface
 from games.pong.pong_interface.pong_menu import PongMenu
 from games.pong.pong_game import PongGame
 from games.pong.pong_interface.pong_settings import PongSettings
 from core.utilities.Interface.quit_interface import QuitInterface
+
+#import utilities
 from core.utilities.time.delay import Delay
 
 class PongScreen:
 
-    def __init__(self, screen, input_manager, screen_width, screen_height):
+    def __init__(self, surface, input_manager):
 
-        self.surface = screen
-
+        self.surface = surface
         self.input = input_manager
 
-        self.screen_width = screen_width
-        self.screen_height = screen_height
+        self.transition_delay = Delay(500)  # 0.5 secondes
 
-        self.transition_delay = Delay(1000)  # 1 seconde
-
+        #init state
         self.state = "menu"
-
         self.next_state = None
+
         self.menu = PongMenu(self.surface, self.input)
-        self.game = PongGame(self.surface, self.input, self.screen_width, self.screen_height)
+        self.game = PongGame(self.surface, self.input)
         self.settings = PongSettings(self.surface, self.input)
         self.quit = QuitInterface(self.surface)
 
@@ -34,20 +34,22 @@ class PongScreen:
             result = self.menu.update()
 
             if result == "PLAY":
-                self.state = "game"
+                self.next_state = "game"
+                self.state = "transition"
                 self.transition_delay.start()
 
             if result == "SETTINGS" :
-                self.state = "settings"
+                self.next_state = "settings"
+                self.state = "transition"
                 self.transition_delay.start()
 
             if result == "RETURN":
                 self.state = "menu"
-                self.transition_delay.start()
                 return "RETURN"
             
             if result == "QUIT":
-                self.state = "quit"
+                self.next_state = "quit"
+                self.state = "transition"
                 self.transition_delay.start()
 
         elif self.state == "game":
@@ -55,7 +57,8 @@ class PongScreen:
             result_game = self.game.update()
 
             if result_game == "RETURN":
-                self.state = "menu"
+                self.next_state = "menu"
+                self.state = "transition"
                 self.transition_delay.start()
 
 
@@ -64,7 +67,8 @@ class PongScreen:
             result_settings = self.settings.update()
 
             if result_settings == "RETURN":
-                self.state = "menu"
+                self.next_state = "menu"
+                self.state = "transition"
                 self.transition_delay.start()
 
         elif self.state == "quit":
@@ -75,7 +79,14 @@ class PongScreen:
                 print("good bye !")
                 pygame.quit()
             if result_quit == "NO":
-                self.state = "menu"
+                self.next_state = "menu"
+                self.state = "transition"
+
+        elif self.state == "transition":
+
+            if not self.transition_delay.is_running():
+                self.state = self.next_state
+                self.next_state = None
 
     def draw(self, surface):
 
@@ -84,11 +95,14 @@ class PongScreen:
         if self.state == "menu" and not self.transition_delay.is_running():
             self.menu.draw(surface)
 
-        if self.state == "game":
+        if self.state == "game" and not self.transition_delay.is_running():
             self.game.draw(surface)
 
-        if self.state == "settings":
+        if self.state == "settings" and not self.transition_delay.is_running():
             self.settings.draw(surface)
 
-        if self.state == "quit":
+        if self.state == "quit" and not self.transition_delay.is_running():
             self.quit.draw(surface)
+
+        if self.state == "transition":
+            pass

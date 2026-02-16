@@ -24,14 +24,14 @@ class Screen:
         except (pygame.error, FileNotFoundError) as e:
             print(f"⚠️ Warning: Could not load icon - {e}")
 
-        self.transition_delay = Delay(500)  # 0.5 seconde
+        self.transition_delay = Delay(500)  # 0.5 secondes
 
         self.state = "main_menu"
         
         self.next_state = None
         self.menu = Menu(self.surface, self.input)
-        self.pong = PongScreen(self.surface, self.input, self.width, self.height)
-        self.flappy_bird = FlappyBirdScreen()
+        self.pong = PongScreen(self.surface, self.input)
+        self.flappy_bird = FlappyBirdScreen(self.surface, self.input)
         self.settings = Settings(self.surface, self.input)
         self.quit = QuitInterface(self.surface)
 
@@ -52,12 +52,19 @@ class Screen:
                 self.state = "transition"
                 self.transition_delay.start()
 
+            if result_menu == "FLAPPY_BIRD":
+                self.next_state = "flappy_bird"
+                self.state = "transition"
+                self.transition_delay.start()
+
             elif result_menu == "SETTINGS":
-                self.state = "settings"
+                self.next_state = "settings"
+                self.state = "transition"
                 self.transition_delay.start()
 
             elif result_menu == "QUIT":
-                self.state = "quit"
+                self.next_state = "quit"
+                self.state = "transition"
                 self.transition_delay.start()
 
         elif self.state == "pong":
@@ -67,6 +74,14 @@ class Screen:
             if result_pong == "RETURN":
                 self.state = "main_menu"
                 self.transition_delay.start()
+
+        elif self.state == "flappy_bird":
+
+            result_flappy_bird = self.flappy_bird.update()
+
+            if result_flappy_bird == "RETURN":
+                self.state = "main_menu"
+                self.transition_delay.start
 
         elif self.state == "settings":
 
@@ -97,16 +112,19 @@ class Screen:
 
         self.surface.fill((30, 30, 30))
 
-        if self.state == "main_menu":
+        if self.state == "main_menu" and not self.transition_delay.is_running():
             self.menu.draw(self.surface)
 
-        if self.state == "pong":
+        if self.state == "pong" and not self.transition_delay.is_running():
             self.pong.draw(self.surface)
 
-        if self.state == "settings":
+        if self.state == "flappy_bird" and not self.transition_delay.is_running():
+            self.flappy_bird.draw(self.surface)
+
+        if self.state == "settings" and not self.transition_delay.is_running():
             self.settings.draw(self.surface)
 
-        if self.state == "quit":
+        if self.state == "quit" and not self.transition_delay.is_running():
             self.quit.draw(self.surface)
 
         if self.state == "transition":

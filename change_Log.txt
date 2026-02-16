@@ -1,3 +1,55 @@
+=== v.0.0.4.5 (flappy_bird_integration) === 16/02/2026 === NORMAL UPDATE === 7 changes
+
+-general_ui modernization
+-screen update :
+    -allow the possibility to acces flappy_bird
+-pong_screen correction :
+    -code structure correction
+-pong_game code optimisation:
+    -dont need to ask : screen_width, screen_height anymore
+-flappy_bird integration :
+    -a flappy_bird_screen was integrated
+    -a flappy_bird_menu was integrated
+    -a flappy_bird_settings was integrated
+    -the flappy_bird_game was integrated
+-menu ameliorations :
+    -a tiny comment was added in the bottom of the main_menu (10)
+        -"Powered by Pygame & passion"
+        -"Bug-free* gaming (*probably)"
+        -"made from scratch"
+        -"Code • Play • Repeat"
+        -"Coded with 🐍 and ❤️"
+        -"From 'Hello World' to 'Game Over'"
+        -"No bugs, just features"
+        -"made by TLF"
+        -"One game at a time"
+        -"GG WP"
+    -the version label is now positioned corectly
+-ui_builder ameliorations :
+    -the layout is now adapted for a version label
+    -the layout is now adapted for a subtitle
+-structure_correction :
+    -code incoherence corriged
+    -delay was added to all transitions
+
+---UPDATE SPEC-------
+5 new files added
+2 new folder added
+7 files modifications
+---------------------
+
+___FUTURE UPDATE ESTIMATION___
+-flappy_bird improvements
+-pong improvements
+    -asset integration
+    -parametre integration
+-fullscreen_option integration
+DATE OF REALEASE : 17/02/2026
+TYPE OF UPDATE : NORMAL
+______________________________
+
+===================================================================================
+
 === v.0.0.4 (Pong_Improvements) === 15/02/2026 === Minor UPDATE === 4 changes
 
 -pong_game improvements :

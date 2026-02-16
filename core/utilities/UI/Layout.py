@@ -9,46 +9,70 @@ class Layout:
     RIGHT_CORNER = "right_corner"
     LEFT_CORNER = "left_corner"
 
-    def __init__(self, screen_width, screen_height, spacing=20):
+    def __init__(self, screen_width, screen_height, spacing=20, corner_padding=20, corner_padding_y=15):  # ← NOUVEAU
 
         self.width = screen_width
         self.height = screen_height
         self.spacing = spacing
+        self.corner_padding = corner_padding          # Distance horizontale depuis le bord
+        self.corner_padding_y = corner_padding_y      # ← NOUVEAU : Distance verticale depuis le bas
 
-    def compute_positions(self, count, zone):
+    def compute_positions(self, count, zone, elements=None):
 
         positions = []
 
         if count == 0:
             return positions
         
-         # ---------- CORNERS (SPECIAL CASE) ----------
+        # ---------- CORNERS (SPECIAL CASE) ----------
 
-        # pas de distribution verticale ici
         if zone == Layout.RIGHT_CORNER:
 
             for i in range(count):
 
-                x = self.width - 100
-                y = self.height - 50 - (count - 1 - i) * self.spacing
+                # Calculer x en fonction de la largeur de l'élément
+                if elements and i < len(elements):
+                    element = elements[i]
+                    # Obtenir la largeur réelle du texte rendu
+                    if hasattr(element, 'rect'):
+                        element_width = element.rect.width
+                        x = self.width - element_width // 2 - self.corner_padding
+                    else:
+                        x = self.width - 100  # fallback
+                else:
+                    x = self.width - 100  # fallback si pas d'éléments
+
+                # ← MODIFIÉ : Utiliser corner_padding_y au lieu de 50
+                y = self.height - self.corner_padding_y - (count - 1 - i) * self.spacing
 
                 positions.append((int(x), int(y)))
 
             return positions
-
 
         if zone == Layout.LEFT_CORNER:
 
             for i in range(count):
 
-                x = 100
-                y = self.height - 50 - (count - 1 - i) * self.spacing
+                # Calculer x en fonction de la largeur de l'élément
+                if elements and i < len(elements):
+                    element = elements[i]
+                    if hasattr(element, 'rect'):
+                        element_width = element.rect.width
+                        x = element_width // 2 + self.corner_padding
+                    else:
+                        x = 100  # fallback
+                else:
+                    x = 100  # fallback
+
+                # ← MODIFIÉ : Utiliser corner_padding_y au lieu de 50
+                y = self.height - self.corner_padding_y - (count - 1 - i) * self.spacing
 
                 positions.append((int(x), int(y)))
 
             return positions
 
-        # distribution verticale
+        # ---------- DISTRIBUTION VERTICALE (RESTE IDENTIQUE) ----------
+
         total_height = (count - 1) * self.spacing
 
         start_y = (self.height // 2) - (total_height // 2)
