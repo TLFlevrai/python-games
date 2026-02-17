@@ -12,9 +12,10 @@ class FlappyBirdSettings:
         self.input = input_manager
 
         self.layout = Layout(self.screen_width, self.screen_height)
+        self.layout_return = Layout(self.screen_width, self.screen_height, corner_padding_y=60)
 
         self.ui_center = UIBuilder(self.layout, Layout.CENTER, self.input)
-        self.ui_return = UIBuilder(self.layout, Layout.LEFT_CORNER, self.input)
+        self.ui_return = UIBuilder(self.layout_return, Layout.LEFT_CORNER, self.input)
 
         self.title = self.ui_center.add_label("FLAPPY BIRD SETTINGS", font_size=72, color=Colors.WHITE)
         self.return_button = self.ui_return.add_button("RETURN")

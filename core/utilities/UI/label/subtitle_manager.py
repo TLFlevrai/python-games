@@ -11,17 +11,28 @@ class SubtitleManager:
 
         # ---------- LISTE DES SOUS-TITRES ----------
         self.subtitles = [
-            #v.0.0.0.4.5
+            #v.0.0.0.4.5 - 10 comment
             "GG WP",
             "Powered by Pygame & passion",
             "Bug-free* gaming (*probably)",
             "made from scratch",
             "From 'Hello World' to 'Game Over'",
             "Code • Play • Repeat",
-            "Coded with 🐍 and ❤️",
+            "Coded with Py and <3",
             "No bugs, just features",
             "One game at a time",
-            "made by TLF"
+            #v.0.0.0.5 + 10 comment
+            "made by TLF",
+            "work smarter, not harder",
+            "code - debug - run - repeat",
+            "new v.0.0.5 !", #special comment about the 0.5
+            "no more hardcoded", #special comment about the 0.5
+            "quality > quantity",
+            "no more hardcoded",
+            "Game Over? Never heard of it" ,
+            "404: Error Not Found",
+            "Classic never dies",
+            "dev.skills += 1"
         ]
 
         # ---------- CONFIGURATION ----------

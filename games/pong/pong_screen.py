@@ -1,12 +1,9 @@
 import pygame
 
-#import interface
 from games.pong.pong_interface.pong_menu import PongMenu
 from games.pong.pong_game import PongGame
 from games.pong.pong_interface.pong_settings import PongSettings
 from core.utilities.Interface.quit_interface import QuitInterface
-
-#import utilities
 from core.utilities.time.delay import Delay
 
 class PongScreen:
@@ -16,15 +13,16 @@ class PongScreen:
         self.surface = surface
         self.input = input_manager
 
-        self.transition_delay = Delay(500)  # 0.5 secondes
+        self.transition_delay = Delay(500)
 
-        #init state
         self.state = "menu"
         self.next_state = None
 
+        self.current_ball_skin = "White"  # ← Skin par défaut
+
         self.menu = PongMenu(self.surface, self.input)
         self.game = PongGame(self.surface, self.input)
-        self.settings = PongSettings(self.surface, self.input)
+        self.settings = PongSettings(self.surface, self.input, self.current_ball_skin)
         self.quit = QuitInterface(self.surface)
 
     def update(self):
@@ -38,15 +36,14 @@ class PongScreen:
                 self.state = "transition"
                 self.transition_delay.start()
 
-            if result == "SETTINGS" :
+            if result == "SETTINGS":
                 self.next_state = "settings"
                 self.state = "transition"
                 self.transition_delay.start()
 
             if result == "RETURN":
-                self.state = "menu"
                 return "RETURN"
-            
+
             if result == "QUIT":
                 self.next_state = "quit"
                 self.state = "transition"
@@ -61,7 +58,6 @@ class PongScreen:
                 self.state = "transition"
                 self.transition_delay.start()
 
-
         elif self.state == "settings":
 
             result_settings = self.settings.update()
@@ -71,12 +67,17 @@ class PongScreen:
                 self.state = "transition"
                 self.transition_delay.start()
 
+            elif result_settings and result_settings.startswith("BALL_SKIN:"):
+                skin = result_settings.split(":")[1]
+                self.current_ball_skin = skin
+                self.game.ball.set_skin(skin)  # ← Applique directement sur la balle
+                print(f"Ball skin appliqué : {skin}")
+
         elif self.state == "quit":
 
             result_quit = self.quit.update()
 
             if result_quit == "YES":
-                print("good bye !")
                 pygame.quit()
             if result_quit == "NO":
                 self.next_state = "menu"

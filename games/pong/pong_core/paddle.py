@@ -2,12 +2,32 @@ import pygame
 
 class Paddle:
 
-    def __init__(self, x, y, width=10, height=100, speed=10):
+    SKINS = {
+        "Blue": "assets/pong/paddle/Blue_Paddle.png",
+        "Red":  "assets/pong/paddle/Red_Paddle.png",
+    }
+
+    def __init__(self, x, y, width=8, height=64, speed=10, skin="Blue"):
+
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.speed = speed
+
+        self.set_skin(skin)
+
+    def set_skin(self, skin):
+        """Change le skin du paddle"""
+        if skin in self.SKINS:
+            try:
+                self.image = pygame.image.load(self.SKINS[skin]).convert_alpha()
+                self.image = pygame.transform.scale(self.image, (self.width, self.height))
+                self.skin = skin
+            except (pygame.error, FileNotFoundError) as e:
+                print(f"⚠️ Paddle skin '{skin}' not found: {e}")
+                self.image = None
+                self.skin = skin
 
     def move_up(self):
         self.y -= self.speed
@@ -20,4 +40,9 @@ class Paddle:
             self.y = screen_height - self.height
 
     def draw(self, surface):
-        pygame.draw.rect(surface, (255, 255, 255,), (self.x, self.y, self.width, self.height))
+
+        if self.image:
+            surface.blit(self.image, (self.x, self.y))
+        else:
+            # Fallback rectangle blanc
+            pygame.draw.rect(surface, (255, 255, 255), (self.x, self.y, self.width, self.height))

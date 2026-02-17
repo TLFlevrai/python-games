@@ -1,4 +1,5 @@
 import pygame
+from games.flappy_bird.flappy_bird_core.flappy_bird_config import FlappyBirdConfig
 
 class Bird:
 
@@ -9,12 +10,12 @@ class Bird:
         self.y = y
 
         # taille
-        self.width = 40
-        self.height = 30
+        self.width = FlappyBirdConfig.BIRD_WIDTH
+        self.height = FlappyBirdConfig.BIRD_HEIGHT
 
         # physique
-        self.gravity = 0.5
-        self.jump_strength = -8
+        self.gravity = FlappyBirdConfig.BIRD_GRAVITY
+        self.jump_strength = FlappyBirdConfig.BIRD_JUMP_STRENGTH
         self.velocity_y = 0
 
         # rotation (visuelle)
@@ -46,7 +47,7 @@ class Bird:
 
         # rotation (visuel)
         if self.velocity_y < 0:
-            self.rotation = -25
+            self.rotation = -FlappyBirdConfig.BIRD_ROTATION_UP
         else:
             self.rotation = min(90, self.rotation + 3)
 

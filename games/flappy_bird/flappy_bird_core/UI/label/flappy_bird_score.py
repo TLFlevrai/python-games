@@ -1,4 +1,5 @@
 import pygame
+from games.flappy_bird.flappy_bird_core.flappy_bird_config import FlappyBirdConfig
 
 class Score:
 
@@ -12,13 +13,12 @@ class Score:
         self.high_score = 0
 
         # ---------- VISUAL ----------
-        self.font_size = 72
-        self.font = pygame.font.SysFont(None, self.font_size)
-        self.color = (255, 255, 255)
+        self.font = pygame.font.SysFont(None, FlappyBirdConfig.SCORE_FONT_SIZE)
+        self.color = FlappyBirdConfig.SCORE_COLOR
 
         # Position (centré en haut)
         self.x = screen_width // 2
-        self.y = 80
+        self.y = FlappyBirdConfig.SCORE_Y_POSITION
 
     # ---------- UPDATE ----------
 

@@ -2,6 +2,7 @@ import pygame
 
 from core.main_interface.menu import Menu
 from core.main_interface.settings import Settings
+from core.utilities.Interface.game_choice import GameChoice
 from games.pong.pong_screen import PongScreen
 from games.flappy_bird.flappy_bird_screen import FlappyBirdScreen
 from core.utilities.Interface.quit_interface import QuitInterface
@@ -10,10 +11,18 @@ from core.utilities.time.delay import Delay
 class Screen:
 
     def __init__(self, input_manager):
-        self.width = 800
-        self.height = 600
+        self.current_resolution = "Fullscreen"  # ← Corriger la typo "FullScreen" → "Fullscreen"
 
         self.input = input_manager
+
+        # ← Démarrer directement en fullscreen
+        self.surface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+
+        # Récupérer les vraies dimensions
+        self.width = self.surface.get_width()
+        self.height = self.surface.get_height()
+        
+        self.current_resolution = "FullScreen"
 
         self.surface = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Python Games")
@@ -30,9 +39,10 @@ class Screen:
         
         self.next_state = None
         self.menu = Menu(self.surface, self.input)
+        self.game_choice = GameChoice(self.surface, self.input)
+        self.settings = Settings(self.surface, self.input, self.current_resolution)
         self.pong = PongScreen(self.surface, self.input)
         self.flappy_bird = FlappyBirdScreen(self.surface, self.input)
-        self.settings = Settings(self.surface, self.input)
         self.quit = QuitInterface(self.surface)
 
     def get_width(self):
@@ -47,13 +57,8 @@ class Screen:
 
             result_menu = self.menu.update()
 
-            if result_menu == "PONG":
-                self.next_state = "pong"
-                self.state = "transition"
-                self.transition_delay.start()
-
-            if result_menu == "FLAPPY_BIRD":
-                self.next_state = "flappy_bird"
+            if result_menu == "PLAY":
+                self.next_state = "play"
                 self.state = "transition"
                 self.transition_delay.start()
 
@@ -67,12 +72,32 @@ class Screen:
                 self.state = "transition"
                 self.transition_delay.start()
 
+        elif self.state == "play":
+
+            result_game_choice = self.game_choice.update()
+
+            if result_game_choice == "FLAPPY_BIRD":
+                self.next_state = "flappy_bird"
+                self.state = "transition"
+                self.transition_delay.start()
+
+            elif result_game_choice == "PONG":
+                self.next_state = "pong"
+                self.state = "transition"
+                self.transition_delay.start()
+
+            elif result_game_choice == "RETURN":
+                self.next_state = "main_menu"
+                self.state = "transition"
+                self.transition_delay.start()
+
         elif self.state == "pong":
 
             result_pong = self.pong.update()
 
             if result_pong == "RETURN":
-                self.state = "main_menu"
+                self.next_state = "play"
+                self.state = "transition"
                 self.transition_delay.start()
 
         elif self.state == "flappy_bird":
@@ -80,8 +105,9 @@ class Screen:
             result_flappy_bird = self.flappy_bird.update()
 
             if result_flappy_bird == "RETURN":
-                self.state = "main_menu"
-                self.transition_delay.start
+                self.next_state = "play"
+                self.state = "transition"
+                self.transition_delay.start()
 
         elif self.state == "settings":
 
@@ -91,13 +117,16 @@ class Screen:
                 self.state = "main_menu"
                 self.transition_delay.start()
 
+            elif result2 and result2.startswith("RESOLUTION:"):
+                selected = result2.split(":")[1]
+                self._apply_resolution(selected)
+
         elif self.state == "quit":
 
             result_quit = self.quit.update()
 
             if result_quit == "YES":
-                print("good bye !")
-                pygame.quit()
+                return "QUIT"
             if result_quit == "NO":
                 self.state = "main_menu"
                 self.transition_delay.start()
@@ -115,6 +144,9 @@ class Screen:
         if self.state == "main_menu" and not self.transition_delay.is_running():
             self.menu.draw(self.surface)
 
+        if self.state == "play" and not self.transition_delay.is_running():
+            self.game_choice.draw(self.surface)
+
         if self.state == "pong" and not self.transition_delay.is_running():
             self.pong.draw(self.surface)
 
@@ -129,3 +161,36 @@ class Screen:
 
         if self.state == "transition":
             pass
+
+    def _apply_resolution(self, resolution):
+        """Applique la résolution sélectionnée et reconstruit tous les écrans"""
+
+        if resolution == "Fullscreen":
+            self.surface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        elif resolution == "800x600":
+            self.surface = pygame.display.set_mode((800, 600))
+        elif resolution == "1280x720":
+            self.surface = pygame.display.set_mode((1280, 720))
+
+        # Mettre à jour les dimensions
+        self.width = self.surface.get_width()
+        self.height = self.surface.get_height()
+        self.current_resolution = resolution
+
+        print(f"🖥️ Résolution appliquée : {self.width}x{self.height}")
+
+        # Reconstruire tous les écrans avec les nouvelles dimensions
+        self._rebuild()
+
+    def _rebuild(self):
+        """Recrée tous les écrans avec les dimensions actuelles"""
+
+        self.menu = Menu(self.surface, self.input)
+        self.pong = PongScreen(self.surface, self.input)
+        self.flappy_bird = FlappyBirdScreen(self.surface, self.input)
+        self.settings = Settings(self.surface, self.input, self.current_resolution)
+        self.quit = QuitInterface(self.surface)
+
+        self.state = "settings"  # ← Reste sur settings après rebuild ✅
+
+        print("🔄 Tous les écrans reconstruits")

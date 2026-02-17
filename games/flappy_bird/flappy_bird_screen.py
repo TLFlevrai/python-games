@@ -2,8 +2,8 @@ import pygame
 
 #import interface
 from games.flappy_bird.flappy_bird_game import FlappyBirdGame
-from games.flappy_bird.flappy_bird_interface.flappy_bird_menu import FlappyBirdMenu
-from games.flappy_bird.flappy_bird_interface.flappy_bird_settings import FlappyBirdSettings
+from games.flappy_bird.flappy_bird_core.interface.flappy_bird_menu import FlappyBirdMenu
+from games.flappy_bird.flappy_bird_core.interface.flappy_bird_settings import FlappyBirdSettings
 from core.utilities.Interface.quit_interface import QuitInterface
 
 #import utilities
@@ -53,7 +53,14 @@ class FlappyBirdScreen :
                 self.transition_delay.start()
 
         elif self.state == "play":
-            self.game.update()
+            result_game = self.game.update()  # ← Récupère le retour du jeu
+
+            # Si le jeu demande de retourner au menu
+            if result_game == "MENU":
+                self.game.reset()
+                self.next_state = "menu"
+                self.state = "transition"
+                self.transition_delay.start()
 
         elif self.state == "settings":
 

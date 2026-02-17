@@ -1,4 +1,6 @@
 import pygame
+
+from games.flappy_bird.flappy_bird_core.flappy_bird_config import FlappyBirdConfig
 from games.flappy_bird.flappy_bird_core.entity.pipe import Pipe
 
 class PipeManager:
@@ -11,9 +13,9 @@ class PipeManager:
         self.pipes = []
 
         self.spawn_timer = 0
-        self.spawn_interval = 90
+        self.spawn_interval = FlappyBirdConfig.PIPE_SPAWN_INTERVAL
 
-        self.speed = 3
+        self.speed = FlappyBirdConfig.PIPE_SPEED
 
     # ---------- UPDATE ----------
 
@@ -22,25 +24,21 @@ class PipeManager:
         collision = False
         scored = False
 
-        # Spawn timer
         self.spawn_timer += 1
         if self.spawn_timer >= self.spawn_interval:
             self.spawn_pipe()
             self.spawn_timer = 0
 
-        for pipe in self.pipes[:]:  # copie pour suppression safe
+        for pipe in self.pipes[:]:
 
             pipe.update()
 
-            # collision
             if pipe.collide(bird_rect):
                 collision = True
 
-            # score
             if pipe.check_score(bird_rect):
                 scored = True
 
-            # delete offscreen
             if pipe.is_offscreen():
                 self.pipes.remove(pipe)
 
@@ -61,6 +59,5 @@ class PipeManager:
     # ---------- RESET ----------
 
     def reset(self):
-        
         self.pipes.clear()
         self.spawn_timer = 0

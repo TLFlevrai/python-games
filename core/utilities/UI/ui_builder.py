@@ -1,7 +1,9 @@
-from core.utilities.UI.create_buton import Button
+from core.utilities.UI.button.create_buton import Button
 from core.utilities.UI.label.create_label import Label
 from core.utilities.UI.label.version_label_version import VersionLabel
-from core.utilities.UI.label.subtitle_label import SubtitleLabel  # ← NOUVEAU
+from core.utilities.UI.label.subtitle_label import SubtitleLabel
+from core.utilities.UI.button.cycle_button import CycleButton  # ← NOUVEAU
+from core.utilities.UI.button.game_button import GameButton
 
 class UIBuilder:
 
@@ -18,59 +20,59 @@ class UIBuilder:
     def add_button(self, text, size=(200, 50), color=None):
         button = Button(text, (0, 0), self.input, size=size, color=color)
         self.elements.append(button)
-
         self.refresh_layout()
-
         return button
 
     def add_label(self, text, font_size=36, color=(255, 255, 255)):
         label = Label(text, (0, 0), font_size=font_size, color=color)
         self.elements.append(label)
-
         self.refresh_layout()
-
         return label
-    
-    def add_subtitle(self, text):  # ← NOUVEAU
-        """Ajoute un sous-titre stylisé avec animation subtile"""
+
+    def add_subtitle(self, text):
         subtitle = SubtitleLabel(text, (0, 0))
         self.elements.append(subtitle)
-
         self.refresh_layout()
-
         return subtitle
-    
+
     def add_version(self, text):
         version = VersionLabel(text, (0, 0))
         self.elements.append(version)
-
         self.refresh_layout()
-
         return version
+
+    def add_cycle_button(self, options):  # ← NOUVEAU
+        """Ajoute un bouton défilant avec plusieurs options"""
+        cycle = CycleButton(options, (0, 0), self.input)
+        self.elements.append(cycle)
+        self.refresh_layout()
+        return cycle
+    
+    def add_game_button(self, text, logo_path):  # ← NOUVEAU
+        """Ajoute un bouton de jeu avec logo"""
+        btn = GameButton(text, logo_path, (0, 0), self.input)
+        self.elements.append(btn)
+        self.refresh_layout()
+        return btn
 
     # ---------- REMOVE ----------
 
     def remove(self, element):
-        """Retire un élément et met à jour le layout"""
         if element in self.elements:
             self.elements.remove(element)
             self.refresh_layout()
 
     def clear(self):
-        """Retire tous les éléments"""
         self.elements.clear()
 
     # ---------- LAYOUT UPDATE ----------
 
     def refresh_layout(self):
-        """Recalcule et applique les positions de tous les éléments"""
-        
         positions = self.layout.compute_positions(
             len(self.elements),
             self.zone,
             elements=self.elements
         )
-
         for element, pos in zip(self.elements, positions):
             element.set_position(pos)
 
@@ -78,10 +80,8 @@ class UIBuilder:
 
     def update(self):
         for element in self.elements:
-
             if hasattr(element, 'update'):
                 result = element.update()
-
                 if result:
                     return element
         return None
@@ -89,21 +89,18 @@ class UIBuilder:
     # ---------- DRAW ----------
 
     def draw(self, surface):
-        """Dessine tous les éléments"""
         for element in self.elements:
             element.draw(surface)
 
     # ---------- UTILITY ----------
 
     def get_button_by_text(self, text):
-        """Trouve un bouton par son texte"""
         for element in self.elements:
             if isinstance(element, Button) and element.text == text:
                 return element
         return None
 
     def get_label_by_text(self, text):
-        """Trouve un label par son texte"""
         for element in self.elements:
             if isinstance(element, Label) and element.text == text:
                 return element

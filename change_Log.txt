@@ -1,3 +1,87 @@
+=== v.0.0.5 (general_improvements) === 17/02/2026 === NORMAL UPDATE === 8 changes
+
+-fullscreen_option integration
+    -the PROJECT as now 3 types of resolution
+        - 800 x 600
+        - 1280 x 720
+        - FULLSCREEN
+-menu improvements :
+    -new comment subtitle added : + 10
+        -"work smarter, not harder"
+        -"code - debug - run - restart"
+        -"new v.0.0.5 !"
+        -"quality > quantity"
+        -"no more hardcoded"
+        -"Game Over? Never heard of it" -- 7
+        -"404: Error Not Found"
+        -"Classic never dies"
+        -"dev.skills += 1"
+-flappy_bird improvements :
+    -centralisation of the variable hardcoded in flappy_bird
+    -add a pause_menu
+    -add a game_over_menu
+-pong_game improvements :
+    -assets integration
+    -refont of pong_pause_interface
+    -refont of pong_game_over_interface
+    -parameters integration :
+        -we can chose multiple ball colors
+            -red
+            -blue
+            -white
+-choose_game_interface integration :
+    -an interface where you can choose what game you want to play
+-ui_builder improvements :
+    -cycle_button was added
+    -game_button was added
+-layout improvements & correction:
+    -the boutton can now be positionned horizontaly
+- bugs_fixed :
+    -the position of the return_button in all_settings was fixed
+
+---UPDATE SPEC----------
+7 assets added
+11 new files added      
+8 new folder added      
+20 files modifications  
+7 outdated files removed
+------------------------
+
+---PROJECT SPEC------
+PROJECT size : 637 ko
+PROJECT files : 544
+PROJECT folder : 271
+---------------------
+
+___FUTURE UPDATE ESTIMATION___
+-Interface improvements
+    -choose_game_interface :
+        -subtitle_menu integration
+-flappy_bird improvements
+    -load_assets
+    -subtitle_menu integration
+-pong improvements
+    -refont of gmeplay
+    -load_assets improvements
+    -ia_integration
+    -subtitle_menu integration
+-tic_tac_toe Integration
+-dino integration
+DATE OF REALEASE : 18/02/2026
+TYPE OF UPDATE : Major
+______________________________
+
+=== NEW - UPDATE RULES======
+
+BUG CORRECTION : 1-3
+Minor UPDATE : 3-6 changes
+NORMAL UPDATE : 6-12 changes
+Major UPDATE : +12 changes
+
+============================
+
+===================================================================================
+
 === v.0.0.4.5 (flappy_bird_integration) === 16/02/2026 === NORMAL UPDATE === 7 changes
 
 -general_ui modernization
@@ -36,6 +120,8 @@
 5 new files added
 2 new folder added
 7 files modifications
++1126 lines of code added
+-91 lines of code removed
 ---------------------
 
 ___FUTURE UPDATE ESTIMATION___

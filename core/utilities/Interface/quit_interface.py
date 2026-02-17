@@ -88,7 +88,7 @@ class QuitInterface:
         surface.blit(yes_text, yes_text_rect)
 
         # Bouton NO
-        no_color = Colors.BUTTON_HOVER if self.no_button_rect.collidepoint(mouse_pos) else Colors.BUTTON
+        no_color = Colors.BUTTON_HOVER if self.no_button_rect.collidepoint(mouse_pos) else Colors.BUTTON_BG
         pygame.draw.rect(surface, no_color, self.no_button_rect, border_radius=10)
         pygame.draw.rect(surface, Colors.WHITE, self.no_button_rect, width=2, border_radius=10)
 

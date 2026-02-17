@@ -16,13 +16,8 @@ class Menu:
 
         self.input = input_manager
 
-        self.layout = Layout(
-        self.screen_width, 
-        self.screen_height, 
-        spacing=80,
-        corner_padding=20,       # Distance horizontale
-        corner_padding_y=15      # ← Distance verticale (petite valeur = collé en bas)
-        )
+        self.layout = Layout(self.screen_width, self.screen_height, spacing=80, corner_padding=20,corner_padding_y=15)
+
         self.ui_builder = UIBuilder(self.layout, Layout.CENTER, self.input)
         self.version_ui = UIBuilder(self.layout, Layout.RIGHT_CORNER, self.input)
 
@@ -38,13 +33,12 @@ class Menu:
         self.subtitle_label = self.ui_builder.add_subtitle(self.subtitle_manager.get_current())
 
         # Ajouter les boutons
-        self.pong_button = self.ui_builder.add_button("PONG", size=(250, 60))
-        self.flappy_button = self.ui_builder.add_button("FLAPPY BIRD", size=(250, 60))
+        self.play_button = self.ui_builder.add_button("PLAY", size=(250, 60))
         self.settings_button = self.ui_builder.add_button("Settings", size=(250, 60))
         self.quit_button = self.ui_builder.add_button("Quit", size=(250, 60))
 
         # Ajouter la version
-        self.version_label = self.version_ui.add_version("v.0.0.4.5 flappy_bird_integration")
+        self.version_label = self.version_ui.add_version("v.0.0.5 general_improvements")
 
         print("Menu initialisé avec UIBuilder")
         print(f"  - {len(self.ui_builder.elements)} éléments créés")
@@ -63,13 +57,9 @@ class Menu:
 
         # Vérifier quel bouton a été cliqué
         if clicked_element:
-            if clicked_element == self.pong_button:
-                print("→ Menu: Bouton PONG cliqué")
-                return "PONG"
-
-            elif clicked_element == self.flappy_button:
-                print("→ Menu: Bouton FLAPPY BIRD cliqué")
-                return "FLAPPY_BIRD"
+            if clicked_element == self.play_button:
+                print("→ Menu: Bouton PLAY cliqué")
+                return "PLAY"
 
             elif clicked_element == self.settings_button:
                 print("→ Menu: Bouton Settings cliqué")

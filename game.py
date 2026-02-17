@@ -26,7 +26,12 @@ class Game:
             #input manager
             self.input.update(events)
 
-            self.screen.update()
+            screen_result = self.screen.update()
+
+            if screen_result == "QUIT":
+                print("good bye !")
+                pygame.quit()
+
             self.screen.draw()
 
             pygame.display.flip()
