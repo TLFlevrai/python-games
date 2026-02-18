@@ -1,3 +1,46 @@
+=== v.0.0.5.5 (games_integration) === 18/02/2026 === Major UPDATE === 7 changes
+
+-tic_tac_toe integration
+-dino integration
+-ui_builder improvements:
+    -center_position integration
+-bugs_fixed:
+    -the with and height problem is fixed
+
+---UPDATE SPEC----------
+0 assets added
+7 new files added
+2 new folder added
+0 files modifications
+0 outdated files removed
+------------------------
+
+---PROJECT SPEC------
+PROJECT size : 757 ko
+PROJECT files : 669
+PROJECT folder : 293
+---------------------
+
+___FUTURE UPDATE ESTIMATION___
+DATE OF REALEASE : 19/02/2026
+-Interface improvements
+    -choose_game_interface :
+        -subtitle_menu integration
+-flappy_bird improvements
+    -load_assets
+    -subtitle_menu integration
+    -possibility to quit_game in pause_menu
+-pong improvements
+    -refont of gmeplay
+    -load_assets improvements
+    -ia_integration
+    -subtitle_menu integration
+    -possibility to quit_game in pause_menu
+TYPE OF UPDATE : Minor
+______________________________
+
+===================================================================================
+
 === v.0.0.5 (general_improvements) === 17/02/2026 === NORMAL UPDATE === 8 changes
 
 -fullscreen_option integration

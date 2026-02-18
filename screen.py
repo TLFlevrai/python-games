@@ -5,6 +5,8 @@ from core.main_interface.settings import Settings
 from core.utilities.Interface.game_choice import GameChoice
 from games.pong.pong_screen import PongScreen
 from games.flappy_bird.flappy_bird_screen import FlappyBirdScreen
+from games.tic_tac_toe.tic_tac_toe_screen import TicTacToeScreen
+from games.dino.dino_screen import DinoScreen
 from core.utilities.Interface.quit_interface import QuitInterface
 from core.utilities.time.delay import Delay
 
@@ -43,6 +45,8 @@ class Screen:
         self.settings = Settings(self.surface, self.input, self.current_resolution)
         self.pong = PongScreen(self.surface, self.input)
         self.flappy_bird = FlappyBirdScreen(self.surface, self.input)
+        self.tic_tac_toe = TicTacToeScreen(self.surface, self.input)
+        self.dino = DinoScreen(self.surface, self.input)
         self.quit = QuitInterface(self.surface)
 
     def get_width(self):
@@ -86,6 +90,16 @@ class Screen:
                 self.state = "transition"
                 self.transition_delay.start()
 
+            elif result_game_choice == "Tic_Tac_Toe":
+                self.next_state = "tic_tac_toe"
+                self.state = "transition"
+                self.transition_delay.start()
+
+            elif result_game_choice == "Dino":
+                self.next_state = "dino"
+                self.state = "transition"
+                self.transition_delay.start()
+
             elif result_game_choice == "RETURN":
                 self.next_state = "main_menu"
                 self.state = "transition"
@@ -105,6 +119,23 @@ class Screen:
             result_flappy_bird = self.flappy_bird.update()
 
             if result_flappy_bird == "RETURN":
+                self.next_state = "play"
+                self.state = "transition"
+                self.transition_delay.start()
+
+        elif self.state == "tic_tac_toe":
+            result_tic_tac_toe = self.tic_tac_toe.update()
+
+            if result_tic_tac_toe == "RETURN":
+                self.next_state = "play"
+                self.state = "transition"
+                self.transition_delay.start()
+
+        elif self.state == "dino":
+
+            result_dino = self.dino.update()
+
+            if result_dino == "RETURN":
                 self.next_state = "play"
                 self.state = "transition"
                 self.transition_delay.start()
@@ -152,6 +183,12 @@ class Screen:
 
         if self.state == "flappy_bird" and not self.transition_delay.is_running():
             self.flappy_bird.draw(self.surface)
+
+        if self.state == "tic_tac_toe" and not self.transition_delay.is_running():
+            self.tic_tac_toe.draw(self.surface)
+
+        if self.state == "dino" and not self.transition_delay.is_running():
+            self.dino.draw(self.surface)
 
         if self.state == "settings" and not self.transition_delay.is_running():
             self.settings.draw(self.surface)

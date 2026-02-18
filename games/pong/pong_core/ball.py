@@ -9,7 +9,7 @@ class Ball:
         "Red":   "assets/pong/ball/Red_ball.png",
     }
 
-    def __init__(self, screen_width=800, screen_height=600, speed=5, skin="White"):
+    def __init__(self, screen_width, screen_height, speed=5, skin="White"):
 
         self.screen_width = screen_width
         self.screen_height = screen_height

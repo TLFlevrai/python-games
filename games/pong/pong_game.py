@@ -22,7 +22,7 @@ class PongGame:
         self.state = "playing"  # playing / paused / game_over
 
         # ---------- CORE ----------
-        self.ball = Ball()
+        self.ball = Ball(self.screen_width, self.screen_height)
         self.score = Score(self.screen_width)
 
         self.paddle_left = Paddle(

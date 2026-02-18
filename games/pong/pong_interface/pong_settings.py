@@ -43,7 +43,9 @@ class PongSettings:
         if current_ball in self.BALL_SKINS:
             self.ball_cycle.set_index(self.BALL_SKINS.index(current_ball))
 
-        print("PONG_Settings initialisé avec UIBuilder")
+        print("Tic_Tac_Toe_Menu initialisé avec UIBuilder")
+        print(f"  - {len(self.ui_center.elements)} éléments créés")
+        print(f"  - {len(self.ui_return.elements)} éléments créés")
 
     def update(self):
 

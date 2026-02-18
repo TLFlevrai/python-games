@@ -30,7 +30,7 @@ class GameChoice :
         #add title
         self.title_label = self.ui_builder.add_label("GAMES", font_size=72, color=Colors.WHITE)
 
-        #add button
+        #add game_button
         self.pong_button = self.ui_games.add_game_button(
             "Pong",
             "assets/pong/pong_logo.png"
@@ -40,6 +40,19 @@ class GameChoice :
             "Flappy Bird",
             "assets/flappy_bird/flappy_bird_logo.png"
         )
+
+        self.dino_button = self.ui_games.add_game_button(
+            "Dino",
+            "assets/dino/dino_logo.png"
+        )
+
+        self.tic_tac_toe_button = self.ui_games.add_game_button(
+            "Tic Tac Toe",
+            "assets/tic_tac_toe/tic_tac_toe_logo.png"
+        )
+
+        #bottom
+        #add return button
         self.return_button = self.return_ui.add_button("RETURN")
 
         # Ajouter la version
@@ -52,12 +65,20 @@ class GameChoice :
 
         if clicked_element:
             if clicked_element == self.pong_button:
-                print("→ game_choice: Bouton PLAY cliqué")
+                print("→ game_choice: Bouton PONG cliqué")
                 return "PONG"
 
             elif clicked_element == self.flappy_bird_button:
-                print("→ game_choice: Bouton Settings cliqué")
+                print("→ game_choice: Bouton Flappy Bird cliqué")
                 return "FLAPPY_BIRD"
+            
+            elif clicked_element == self.dino_button:
+                print("→ game_choice: Bouton DINO cliqué")
+                return "Dino"
+
+            elif clicked_element == self.tic_tac_toe_button:
+                print("→ game_choice: Bouton Tic Tac Toe cliqué")
+                return "Tic_Tac_Toe"
 
         clicked_return = self.return_ui.update()
 

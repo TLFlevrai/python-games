@@ -82,6 +82,7 @@ class PongScreen:
             if result_quit == "NO":
                 self.next_state = "menu"
                 self.state = "transition"
+                self.transition_delay.start()
 
         elif self.state == "transition":
 
