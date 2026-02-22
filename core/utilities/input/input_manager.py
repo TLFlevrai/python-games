@@ -95,3 +95,5 @@ class InputManager:
     def space_pressed(self):
         """Raccourci pour la touche Espace"""
         return self.key_just_pressed(pygame.K_SPACE)
+    
+input_manager = InputManager()

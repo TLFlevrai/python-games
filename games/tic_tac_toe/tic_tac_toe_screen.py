@@ -3,7 +3,7 @@ import pygame
 from games.tic_tac_toe.tic_tac_toe_interface.tic_tac_toe_menu import TicTacToeMenu
 from games.tic_tac_toe.tic_tac_toe_interface.tic_tac_toe_settings import TicTacToeSettings
 from games.tic_tac_toe.tic_tac_toe_game import TicTacToeGame
-from core.utilities.Interface.quit_interface import QuitInterface
+from core.Interface.quit_interface import QuitInterface
 from core.utilities.time.delay import Delay
 
 class TicTacToeScreen:
@@ -19,7 +19,7 @@ class TicTacToeScreen:
         self.menu = TicTacToeMenu(self.surface, self.input)
         self.game = TicTacToeGame(self.surface, self.input)
         self.settings = TicTacToeSettings(self.surface, self.input)
-        self.quit = QuitInterface(self.surface)
+        self.quit = QuitInterface(self.surface, self.input)
 
         self.transition_delay = Delay(500)  # 0.5 secondes
 

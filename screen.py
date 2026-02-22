@@ -1,13 +1,13 @@
 import pygame
 
-from core.main_interface.menu import Menu
-from core.main_interface.settings import Settings
-from core.utilities.Interface.game_choice import GameChoice
+from main_interface.menu import Menu
+from main_interface.settings import Settings
+from main_interface.game_choice import GameChoice
 from games.pong.pong_screen import PongScreen
 from games.flappy_bird.flappy_bird_screen import FlappyBirdScreen
 from games.tic_tac_toe.tic_tac_toe_screen import TicTacToeScreen
 from games.dino.dino_screen import DinoScreen
-from core.utilities.Interface.quit_interface import QuitInterface
+from core.Interface.quit_interface import QuitInterface
 from core.utilities.time.delay import Delay
 
 class Screen:
@@ -47,7 +47,7 @@ class Screen:
         self.flappy_bird = FlappyBirdScreen(self.surface, self.input)
         self.tic_tac_toe = TicTacToeScreen(self.surface, self.input)
         self.dino = DinoScreen(self.surface, self.input)
-        self.quit = QuitInterface(self.surface)
+        self.quit = QuitInterface(self.surface, self.input)
 
     def get_width(self):
         return self.width
@@ -226,7 +226,7 @@ class Screen:
         self.pong = PongScreen(self.surface, self.input)
         self.flappy_bird = FlappyBirdScreen(self.surface, self.input)
         self.settings = Settings(self.surface, self.input, self.current_resolution)
-        self.quit = QuitInterface(self.surface)
+        self.quit = QuitInterface(self.surface, self.input)
 
         self.state = "settings"  # ← Reste sur settings après rebuild ✅
 

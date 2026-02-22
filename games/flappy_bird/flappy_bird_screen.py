@@ -4,7 +4,7 @@ import pygame
 from games.flappy_bird.flappy_bird_game import FlappyBirdGame
 from games.flappy_bird.flappy_bird_core.interface.flappy_bird_menu import FlappyBirdMenu
 from games.flappy_bird.flappy_bird_core.interface.flappy_bird_settings import FlappyBirdSettings
-from core.utilities.Interface.quit_interface import QuitInterface
+from core.Interface.quit_interface import QuitInterface
 
 #import utilities
 from core.utilities.time.delay import Delay
@@ -23,7 +23,7 @@ class FlappyBirdScreen :
         self.menu = FlappyBirdMenu(self.surface, self.input)
         self.game = FlappyBirdGame(self.surface, self.input)
         self.settings = FlappyBirdSettings(self.surface, self.input)
-        self.quit = QuitInterface(self.surface)
+        self.quit = QuitInterface(self.surface, self.input)
 
         self.transition_delay = Delay(500)  # 0.5 secondes
 

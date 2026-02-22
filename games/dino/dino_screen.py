@@ -1,9 +1,9 @@
 import pygame
 
-from games.dino.dino_interface.dino_menu import DinoMenu
-from games.dino.dino_interface.dino_settings import DinoSettings
-from games.dino.dino_game import DinoRunnerGame
-from core.utilities.Interface.quit_interface import QuitInterface
+from games.dino.dino_menu.dino_menu import DinoMenu
+from games.dino.dino_menu.dino_settings import DinoSettings
+from games.dino.dino_game import DinoGame
+from core.Interface.quit_interface import QuitInterface
 from core.utilities.time.delay import Delay
 
 class DinoScreen:
@@ -17,9 +17,9 @@ class DinoScreen:
         self.next_state = None
 
         self.menu = DinoMenu(self.surface, self.input)
-        self.game = DinoRunnerGame(self.surface, self.input)
+        self.game = DinoGame(self.surface, self.input)
         self.settings = DinoSettings(self.surface, self.input)
-        self.quit = QuitInterface(self.surface)
+        self.quit = QuitInterface(self.surface, self.input)
 
         self.transition_delay = Delay(500)  # 0.5 secondes
 
@@ -93,3 +93,6 @@ class DinoScreen:
 
         if self.state == "settings" and not self.transition_delay.is_running():
             self.settings.draw(surface)
+
+        if self.state == "quit" and not self.transition_delay.is_running():
+            self.quit.draw(surface)

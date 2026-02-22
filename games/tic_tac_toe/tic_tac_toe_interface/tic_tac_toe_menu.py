@@ -1,22 +1,19 @@
 from core.utilities.colors import Colors
-from core.utilities.UI.Layout import Layout
-from core.utilities.UI.ui_builder import UIBuilder
+from core.ui import Layout, Zone, UIBuilder
 
 class TicTacToeMenu:
-
     def __init__(self, surface, input_manager):
         self.surface = surface
-        self.surface_width = surface.get_width()
-        self.surface_height = surface.get_height()
-
+        self.screen_width = surface.get_width()
+        self.screen_height = surface.get_height()
         self.input = input_manager
 
-        #initialisation du layout
-        self.layout = Layout(self.surface_width, self.surface_height, spacing=80)
-        self.ui_builder = UIBuilder(self.layout, Layout.CENTER, self.input)
+        # Layout centré
+        self.layout = Layout(self.screen_width, self.screen_height, spacing=80)
+        self.ui_builder = UIBuilder(self.layout, Zone.CENTER, self.input)
 
-        #ajout dse elements
-        self.title_Label = self.ui_builder.add_label("TIC TAC TOE", font_size=72, color=Colors.WHITE)
+        # Ajout des éléments
+        self.title_label = self.ui_builder.add_label("TIC TAC TOE", font_size=72, color=Colors.WHITE)
         self.play_button = self.ui_builder.add_button("PLAY", size=(250, 60))
         self.settings_button = self.ui_builder.add_button("Settings", size=(250, 60))
         self.return_button = self.ui_builder.add_button("Return", size=(250, 60))
@@ -26,10 +23,9 @@ class TicTacToeMenu:
         print(f"  - {len(self.ui_builder.elements)} éléments créés")
 
     def update(self):
-        
         clicked_element = self.ui_builder.update()
-        
-        if clicked_element :
+
+        if clicked_element:
             if clicked_element == self.play_button:
                 print("→ Tic_Tac_Toe_Menu: Bouton PLAY cliqué")
                 return "PLAY"
@@ -42,7 +38,7 @@ class TicTacToeMenu:
             if clicked_element == self.quit_button:
                 print("→ Tic_Tac_Toe_Menu: Bouton QUIT cliqué")
                 return "QUIT"
-        
+
         return None
 
     def draw(self, surface):

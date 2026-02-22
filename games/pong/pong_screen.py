@@ -3,7 +3,7 @@ import pygame
 from games.pong.pong_interface.pong_menu import PongMenu
 from games.pong.pong_game import PongGame
 from games.pong.pong_interface.pong_settings import PongSettings
-from core.utilities.Interface.quit_interface import QuitInterface
+from core.Interface.quit_interface import QuitInterface
 from core.utilities.time.delay import Delay
 
 class PongScreen:
@@ -23,7 +23,7 @@ class PongScreen:
         self.menu = PongMenu(self.surface, self.input)
         self.game = PongGame(self.surface, self.input)
         self.settings = PongSettings(self.surface, self.input, self.current_ball_skin)
-        self.quit = QuitInterface(self.surface)
+        self.quit = QuitInterface(self.surface, self.input)
 
     def update(self):
 
