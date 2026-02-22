@@ -32,16 +32,18 @@ All cahnges will be implement for the v.0.0.7 of the project
     -choose_game_interface :
         -subtitle_menu integration
 -flappy_bird improvements
+    -gameplay improvements
     -load_assets
     -subtitle_menu integration
     -possibility to quit_game in pause_menu
 -pong improvements
-    -refont of gmeplay
+    -refont of gameplay
     -load_assets improvements
     -ia_integration
     -subtitle_menu integration
     -possibility to quit_game in pause_menu
 -tic_tac_toe improvements
+    -interface refont
 -clicker integration
 -snake integrationt
 -pacman integration
