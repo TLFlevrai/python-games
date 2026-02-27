@@ -1,59 +1,61 @@
-"""
-Configuration des obstacles
-"""
+# games/dino/core/configs/obstacle_config.py
 from dataclasses import dataclass, field
 from typing import List
 import random
+import os
 from core.utilities.colors import Colors
-
 
 @dataclass
 class ObstacleType:
-    """Définition d'un type d'obstacle"""
     name: str
+    class_name: str
     width: int
     height: int
     points: int = 100
-    color: tuple = Colors.CACTUS_GREEN  # Vert cactus
-    y_offset: int = 0  # Décalage vertical (pour oiseaux volants)
-    spawn_weight: int = 1  # Poids pour spawn aléatoire (plus = plus fréquent)
-
+    color: tuple = Colors.CACTUS_GREEN
+    y_offset: int = 0
+    spawn_weight: int = 1
+    image_paths: List[str] = field(default_factory=list)
 
 @dataclass
 class ObstacleConfig:
-    """Configuration de tous les obstacles"""
-    # Définition des types d'obstacles
     types: List[ObstacleType] = field(default_factory=list)
-    
+    base_path: str = os.path.join("assets", "dino", "entity", "obstacle")
+
     def __post_init__(self):
         if not self.types:
             self.types = [
-                ObstacleType("small_cactus", 17, 35, 100, Colors.CACTUS_GREEN, 0, 4),
-                ObstacleType("medium_cactus", 25, 50, 150, Colors.CACTUS_GREEN, 0, 3),
-                ObstacleType("tall_cactus", 25, 65, 200, Colors.CACTUS_GREEN, 0, 2),
-                ObstacleType("double_cactus", 40, 50, 250, Colors.CACTUS_GREEN, 0, 1),
-                ObstacleType("bird", 40, 25, 300, Colors.BIRD_BROWN, -50, 1),
+                ObstacleType("cactus_1", "cactus", 100, 100, 100, Colors.CACTUS_GREEN, 5, 4,
+                             [os.path.join("cactus", "cactus1.png")]),
+                ObstacleType("cactus_2", "cactus", 100, 100, 150, Colors.CACTUS_GREEN, 5, 3,
+                             [os.path.join("cactus", "cactus2.png")]),
+                ObstacleType("cactus_3", "cactus", 100, 100, 200, Colors.CACTUS_GREEN, 5, 2,
+                             [os.path.join("cactus", "cactus3.png")]),
+                ObstacleType("cactus_4", "cactus", 100, 100, 250, Colors.CACTUS_GREEN, 5, 1,
+                             [os.path.join("cactus", "cactus4.png")]),
+                ObstacleType("cactus_5", "cactus", 100, 100, 200, Colors.CACTUS_GREEN, 5, 2,
+                             [os.path.join("cactus", "cactus5.png")]),
+                ObstacleType("cactus_6", "cactus", 100, 100, 120, Colors.CACTUS_GREEN, 5, 3,
+                             [os.path.join("cactus", "cactus6.png")]),
+                # Bird : y_offset plus négatif pour être plus haut
+                ObstacleType("bird", "bird", 84, 62, 300, Colors.BIRD_BROWN, -80, 1,
+                             [os.path.join("flying", "Ptero1.png"), os.path.join("flying", "Ptero2.png")]),
             ]
-    
+
     def get_random_type(self) -> ObstacleType:
-        """Retourne un type d'obstacle aléatoire (pondéré)"""
         weights = [t.spawn_weight for t in self.types]
         return random.choices(self.types, weights=weights)[0]
-    
+
     def get_type_by_name(self, name: str) -> ObstacleType:
-        """Retourne un type par son nom"""
         for t in self.types:
             if t.name == name:
                 return t
         raise ValueError(f"Type d'obstacle inconnu: {name}")
-    
+
     def add_type(self, obstacle_type: ObstacleType):
-        """Ajoute un nouveau type d'obstacle"""
         self.types.append(obstacle_type)
-    
+
     def __repr__(self) -> str:
         return f"ObstacleConfig({len(self.types)} types disponibles)"
 
-
-# Instance unique
 obstacle_config = ObstacleConfig()

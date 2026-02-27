@@ -1,83 +1,97 @@
-import pygame
-from .core.entities.dino import Dino
-from .core.entities.ground import Ground
-from .core.managers.obstacle_manager import ObstacleManager
-from .core.managers.score_manager import ScoreManager          # ← Ajout
-from .core.interfaces.pause_interface import PauseInterface
-from .core.interfaces.game_over_interface import GameOverInterface
-from .core.configs import game_config                          # ← Ajout
+# games/dino/dino_game.py
 
+import pygame
+import random
+from .core import (
+    Dino, Ground, Cloud,
+    ObstacleManager, ScoreManager, SoundManager,
+    PauseInterface, GameOverInterface,
+    game_config
+)
 
 class DinoGame:
     def __init__(self, screen, input_manager):
         self.surface = screen
         self.input = input_manager
-
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
 
-        # Création du sol
-        self.ground = Ground(self.screen_height)
+        self.ground = Ground(self.screen_width, self.screen_height)
 
-        # ---------- STATE MACHINE ----------
-        self.state = "playing"  # playing / paused / game_over
-
-        # ---------- DINO ----------
-        self.dino = Dino(self.ground.get_y())
-
-        # ---------- OBSTACLES ----------
-        self.obstacle_manager = ObstacleManager(self.screen_width, self.ground.get_y())
-
-        # ---------- SCORE (via ScoreManager) ----------
+        self.state = "playing"
+        self.dino = Dino(self.ground.y)
+        self.obstacle_manager = ObstacleManager(self.screen_width, self.ground.y)
         self.score_manager = ScoreManager()
+        self.sound_manager = SoundManager()
 
-        # ---------- INTERFACES ----------
+        self.clouds = []
+        self.cloud_timer = 0
+        self.cloud_spawn_interval = game_config.cloud_spawn_interval
+
         self.pause_interface = PauseInterface(self.surface, self.input)
         self.game_over_interface = GameOverInterface(self.surface, self.input)
 
-        # ---------- VISUALS ----------
         self.font_score = pygame.font.SysFont("Courier New", 20)
+        self.last_point_sound_score = 0
 
-    # RESET
     def reset(self):
-        """Réinitialise le jeu"""
         self.state = "playing"
-        self.dino.reset(self.ground.get_y())
+        self.dino.reset(self.ground.y)
         self.obstacle_manager.reset()
-        self.score_manager.reset()          # ← Important
-        print("🔄 Dino Runner reset")
+        self.score_manager.reset()
+        self.clouds.clear()
+        self.cloud_timer = 0
+        self.last_point_sound_score = 0
+        print("🔄 Dino Game reset")
 
-    # UPDATE
     def update(self):
-        # ---------- PLAYING ----------
         if self.state == "playing":
-            # Input saut
+            # Input
             if self.input.space_pressed() or self.input.click():
                 self.dino.jump()
+                self.sound_manager.play_jump()
 
-            # Input pause
+            # Gestion du canard (touche bas)
+            if self.input.key_is_pressed(pygame.K_DOWN):
+                self.dino.duck()
+            else:
+                self.dino.unduck()
+
             if self.input.key_just_pressed(pygame.K_ESCAPE):
                 self.state = "paused"
                 return
 
-            # Mise à jour dino
+            # Mise à jour des entités
             self.dino.update()
+            self.ground.update()
 
-            # Mise à jour obstacles + collision
+            # Nuages
+            now = pygame.time.get_ticks()
+            if now - self.cloud_timer >= self.cloud_spawn_interval:
+                y = random.randint(50, 300)
+                self.clouds.append(Cloud(self.screen_width, y))
+                self.cloud_timer = now
+
+            for cloud in self.clouds[:]:
+                cloud.update()
+                if cloud.is_offscreen():
+                    self.clouds.remove(cloud)
+
+            # Obstacles
             collision = self.obstacle_manager.update(self.dino.get_rect())
             if collision:
+                self.sound_manager.play_death()
                 self.state = "game_over"
                 return
 
-            # Score temporel
-            self.score_manager.increase_time_score()   # ← Nouveau
+            # Score
+            self.score_manager.increase_time_score()
+            # Son tous les 100 points (arrondi à l'entier)
+            current_int = int(self.score_manager.current_score)
+            if current_int // 100 > self.last_point_sound_score:
+                self.sound_manager.play_point()
+                self.last_point_sound_score = current_int // 100
 
-            # Bonus pour obstacles passés (optionnel, à implémenter plus tard)
-            # for obstacle in self.obstacle_manager.obstacles:
-            #     if obstacle.get_rect().right < self.dino.get_rect().left:
-            #         self.score_manager.register_obstacle_pass(id(obstacle))
-
-        # ---------- PAUSED ----------
         elif self.state == "paused":
             result = self.pause_interface.update()
             if result == "RESUME" or self.input.key_just_pressed(pygame.K_ESCAPE):
@@ -87,9 +101,7 @@ class DinoGame:
             elif result == "MENU":
                 return "MENU"
 
-        # ---------- GAME OVER ----------
         elif self.state == "game_over":
-            # Passage du score courant ET du high score
             result = self.game_over_interface.update(
                 self.score_manager.current_score,
                 self.score_manager.high_score
@@ -99,23 +111,19 @@ class DinoGame:
             elif result == "MENU":
                 return "MENU"
 
-    # ==================================================
-    # DRAW
-    # ==================================================
-
     def draw(self, surface):
-        # ---------- SOL (avec game_config) ----------
-        self.ground.draw(surface)
+        surface.fill((255, 255, 255))
 
-        # ---------- JEU ----------
+        for cloud in self.clouds:
+            cloud.draw(surface)
+
+        self.ground.draw(surface)
         self.dino.draw(surface)
         self.obstacle_manager.draw(surface)
 
-        # ---------- SCORE ----------
         if self.state == "playing":
             self._draw_scores(surface)
 
-        # ---------- OVERLAYS ----------
         if self.state == "paused":
             self.pause_interface.draw(surface)
         elif self.state == "game_over":
@@ -125,26 +133,21 @@ class DinoGame:
                 self.score_manager.high_score
             )
 
-    # HELPERS
     def _draw_scores(self, surface):
-        """Affiche le score courant et le high score"""
-        # Score courant formaté
         score_text = self.font_score.render(
             f"Score: {self.score_manager.get_formatted_score()}",
-            True, game_config.ground_color
+            True, (83,83,83)
         )
         surface.blit(score_text, (self.screen_width - 200, 30))
 
-        # High score
         high_score_text = self.font_score.render(
             f"HI: {self.score_manager.get_formatted_high_score()}",
-            True, (100, 100, 100)
+            True, (100,100,100)
         )
         surface.blit(high_score_text, (self.screen_width - 200, 55))
 
-        # Indicateur de nouveau record
         if (self.score_manager.current_score >= self.score_manager.high_score
                 and self.score_manager.current_score > 0):
             record_font = pygame.font.SysFont("Courier New", 16)
-            record_text = record_font.render("NEW RECORD!", True, (255, 200, 50))
+            record_text = record_font.render("NEW RECORD!", True, (255,200,50))
             surface.blit(record_text, (self.screen_width - 200, 75))

@@ -12,21 +12,28 @@ class QuitInterface:
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
 
-        # Créer un layout centré pour le titre et les boutons
+        block_offset = 60
+
+        # Créer des layouts
         self.layout = Layout(self.screen_width, self.screen_height, spacing=60)
+        self.horizontal_layout = Layout(self.screen_width, self.screen_height, horizontal_spacing=40, row_y=self.screen_height // 2 + block_offset)
+        
+        #init builders
         self.builder = UIBuilder(self.layout, Zone.CENTER, self.input)
+        self.horizontal_builder = UIBuilder(self.horizontal_layout, Zone.HORIZONTAL_CENTER, self.input)
 
         # Ajouter les éléments
         self.title_label = self.builder.add_label("Quit Game?", font_size=72, color=Colors.WHITE)
-        self.yes_button = self.builder.add_button("YES", size=(150, 60), color=Colors.ACCENT_RED)
-        self.no_button = self.builder.add_button("NO", size=(150, 60))
+        self.yes_button = self.horizontal_builder.add_button("YES", size=(150, 60), color=Colors.ACCENT_RED)
+        self.no_button = self.horizontal_builder.add_button("NO", size=(150, 60))
 
         # Pour stocker le résultat
         self.result = None
 
     def update(self) -> str | None:
         """Met à jour l'interface et retourne 'YES' ou 'NO' si un bouton est cliqué."""
-        clicked = self.builder.update()
+        
+        clicked = self.horizontal_builder.update()
         if clicked == self.yes_button:
             print("button_clicked : YES (quit_interface.py)")
             return "YES"
@@ -44,3 +51,4 @@ class QuitInterface:
 
         # Dessiner les éléments via le builder
         self.builder.draw(surface)
+        self.horizontal_builder.draw(surface)

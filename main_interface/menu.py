@@ -38,7 +38,7 @@ class Menu:
         self.play_button = self.ui_builder.add_button("PLAY", size=(250, 60))
         self.settings_button = self.ui_builder.add_button("Settings", size=(250, 60))
         self.quit_button = self.ui_builder.add_button("Quit", size=(250, 60))
-        self.version_label = self.version_ui.add_version("v.0.0.5 general_improvements")
+        self.version_label = self.version_ui.add_version("v.0.0.6.2 snake_integration")
 
         print("Menu initialisé avec UIBuilder")
         print(f"  - {len(self.ui_builder.elements)} éléments créés")
