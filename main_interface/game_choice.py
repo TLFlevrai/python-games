@@ -43,6 +43,9 @@ class GameChoice:
         self.flappy_bird_button = self.ui_games.add_game_button(
             "Flappy Bird", "assets/flappy_bird/flappy_bird_logo.png"
         )
+        self.snake_button = self.ui_games.add_game_button(
+            "Snake", "assets/snake/snake_logo.png"
+        )
         self.dino_button = self.ui_games.add_game_button(
             "Dino", "assets/dino/dino_logo.png"
         )
@@ -54,7 +57,7 @@ class GameChoice:
         self.return_button = self.return_ui.add_button("RETURN")
 
         # Version
-        self.version_label = self.version_ui.add_version("v.0.0.5 general_improvements")
+        self.version_label = self.version_ui.add_version("v.0.0.6.2 snake_integration")
 
     def update(self):
         # Clic sur les boutons de jeux
@@ -66,6 +69,9 @@ class GameChoice:
             elif clicked_element == self.flappy_bird_button:
                 print("→ game_choice: Bouton Flappy Bird cliqué")
                 return "FLAPPY_BIRD"
+            elif clicked_element == self.snake_button:
+                print("→ game_choice: Bouton SNAKE cliqué")
+                return "SNAKE"
             elif clicked_element == self.dino_button:
                 print("→ game_choice: Bouton DINO cliqué")
                 return "Dino"

@@ -1,7 +1,3 @@
-"""
-Package de configuration
-Exporte toutes les configs pour faciliter les imports
-"""
 from .dino_config import DinoConfig, dino_config
 from .obstacle_config import ObstacleConfig, ObstacleType, obstacle_config
 from .game_config import GameConfig, game_config

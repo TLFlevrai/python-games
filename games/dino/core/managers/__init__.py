@@ -1,7 +1,7 @@
-"""
-Package des gestionnaires
-"""
-from .obstacle_manager import ObstacleManager
-# from .score_manager import ScoreManager  # À décommenter quand créé
+#games/dino/core/managers/__init__.py
 
-__all__ = ['ObstacleManager']
+from .obstacle_manager import ObstacleManager
+from .score_manager import ScoreManager
+from .sound_manager import SoundManager
+
+__all__ = ['ObstacleManager', 'ScoreManager', 'SoundManager']

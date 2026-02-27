@@ -1,37 +1,19 @@
 # games/dino/core/managers/score_manager.py
 
-import os
 from ..configs import scoring_config
+from core.config.managers.high_score_manager import HighScoreManager
 
 class ScoreManager:
     """Gestionnaire de score et high score pour Dino Runner"""
 
     def __init__(self):
         self.current_score = 0
-        self.high_score = self._load_high_score()
+        self.high_score_manager = HighScoreManager()
+        self.game_id = "dino"
+        self.high_score = self.high_score_manager.get_high_score(self.game_id)
         self.increment = scoring_config.base_score_increment
         self.combo = 0
-        self.last_obstacle_passed = None  # Pour éviter de compter plusieurs fois
-
-    # ------------------------------------------------------------------
-    # High score persistant
-    # ------------------------------------------------------------------
-
-    def _load_high_score(self) -> int:
-        try:
-            if os.path.exists(scoring_config.high_score_file):
-                with open(scoring_config.high_score_file, 'r') as f:
-                    return int(f.read().strip())
-        except (ValueError, IOError):
-            pass
-        return 0
-
-    def _save_high_score(self):
-        try:
-            with open(scoring_config.high_score_file, 'w') as f:
-                f.write(str(self.high_score))
-        except IOError as e:
-            print(f"⚠️ Impossible de sauvegarder le high score : {e}")
+        self.last_obstacle_passed = None
 
     # ------------------------------------------------------------------
     # Gestion du score courant
@@ -51,10 +33,10 @@ class ScoreManager:
         self._check_high_score()
 
     def _check_high_score(self):
-        """Vérifie si le high score est battu et sauvegarde"""
+        """Vérifie si le high score est battu et met à jour via le gestionnaire central"""
         if self.current_score > self.high_score:
             self.high_score = self.current_score
-            self._save_high_score()
+            self.high_score_manager.set_high_score(self.game_id, self.high_score)
 
     def reset(self):
         """Réinitialise le score courant (mais pas le high score)"""

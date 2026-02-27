@@ -5,6 +5,7 @@ from main_interface.settings import Settings
 from main_interface.game_choice import GameChoice
 from games.pong.pong_screen import PongScreen
 from games.flappy_bird.flappy_bird_screen import FlappyBirdScreen
+from games.snake.snake_screen import SnakeScreen
 from games.tic_tac_toe.tic_tac_toe_screen import TicTacToeScreen
 from games.dino.dino_screen import DinoScreen
 from core.Interface.quit_interface import QuitInterface
@@ -45,6 +46,7 @@ class Screen:
         self.settings = Settings(self.surface, self.input, self.current_resolution)
         self.pong = PongScreen(self.surface, self.input)
         self.flappy_bird = FlappyBirdScreen(self.surface, self.input)
+        self.snake = SnakeScreen(self.surface, self.input)
         self.tic_tac_toe = TicTacToeScreen(self.surface, self.input)
         self.dino = DinoScreen(self.surface, self.input)
         self.quit = QuitInterface(self.surface, self.input)
@@ -89,6 +91,11 @@ class Screen:
                 self.next_state = "pong"
                 self.state = "transition"
                 self.transition_delay.start()
+                
+            elif result_game_choice == "SNAKE":
+                self.next_state = "snake"
+                self.state = "transition"
+                self.transition_delay.start()
 
             elif result_game_choice == "Tic_Tac_Toe":
                 self.next_state = "tic_tac_toe"
@@ -119,6 +126,14 @@ class Screen:
             result_flappy_bird = self.flappy_bird.update()
 
             if result_flappy_bird == "RETURN":
+                self.next_state = "play"
+                self.state = "transition"
+                self.transition_delay.start()
+
+        elif self.state == "snake":
+            result_snake = self.snake.update()
+
+            if result_snake == "RETURN":
                 self.next_state = "play"
                 self.state = "transition"
                 self.transition_delay.start()
@@ -183,6 +198,9 @@ class Screen:
 
         if self.state == "flappy_bird" and not self.transition_delay.is_running():
             self.flappy_bird.draw(self.surface)
+
+        if self.state == "snake" and not self.transition_delay.is_running():
+            self.snake.draw(self.surface)
 
         if self.state == "tic_tac_toe" and not self.transition_delay.is_running():
             self.tic_tac_toe.draw(self.surface)

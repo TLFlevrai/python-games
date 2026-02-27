@@ -1,7 +1,8 @@
-"""
-Package des entités du jeu
-"""
-from .dino import Dino
-from .obstacle import Obstacle
+#games/dino/core/entities/__init__.py
 
-__all__ = ['Dino', 'Obstacle']
+from .dino import Dino
+from .ground import Ground
+from .cloud import Cloud
+from .obstacles import Obstacle, Cactus, Bird
+
+__all__ = ['Dino', 'Ground', 'Cloud', 'Obstacle', 'Cactus', 'Bird']

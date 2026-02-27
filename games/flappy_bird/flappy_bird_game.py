@@ -102,6 +102,7 @@ class FlappyBirdGame:
                 self.reset()
 
             elif result == "MENU":
+                self.reset()
                 return "MENU"
 
         # ---------- GAME OVER ----------
@@ -113,6 +114,7 @@ class FlappyBirdGame:
                 self.reset()
 
             elif result == "MENU":
+                self.reset()
                 return "MENU"
 
     # ==================================================
@@ -121,7 +123,7 @@ class FlappyBirdGame:
 
     def draw(self, surface):
 
-         # ---------- JEU ----------
+        # ---------- JEU ----------
         self.pipe_manager.draw(surface)
         self.bird.draw(surface)
         self.score_manager.draw(surface)

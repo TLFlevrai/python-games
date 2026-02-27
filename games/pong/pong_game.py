@@ -3,7 +3,7 @@ import pygame
 from games.pong.pong_core.ball import Ball
 from games.pong.pong_core.paddle import Paddle
 from games.pong.pong_core.label.pong_score import Score
-from games.pong.pong_interface.pong_pause_interface import PongPauseInterface
+from games.pong.pong_interface.pong_pause_interface import PauseInterface
 from games.pong.pong_interface.pong_game_over_interface import PongGameOverInterface
 
 class PongGame:
@@ -37,7 +37,7 @@ class PongGame:
         )
 
         # ---------- INTERFACES ----------
-        self.pause_interface = PongPauseInterface(self.screen, self.input)
+        self.pause_interface = PauseInterface(self.screen, self.input)
         self.game_over_interface = PongGameOverInterface(self.screen, self.input)
 
     # ---------- RESET ----------
@@ -78,7 +78,6 @@ class PongGame:
             # Pause via ESC
             if self.input.key_just_pressed(pygame.K_ESCAPE):
                 self.state = "paused"
-                return
 
             event = self.ball.update(self.paddle_left, self.paddle_right)
 
@@ -103,6 +102,10 @@ class PongGame:
 
             if result == "RESUME" or self.input.key_just_pressed(pygame.K_ESCAPE):
                 self.state = "playing"
+
+            elif result == "MENU":
+                self.reset()
+                return "RETURN"
 
             elif result == "RESTART":
                 self.reset()
